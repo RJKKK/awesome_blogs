@@ -1,0 +1,24 @@
+{
+  "name": "awesome_blogs",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@ant-design/colors": "^4.0.5",
+    "ant-design-vue": "^2.0.0-beta.10",
+    "vue": "^3.0.0-rc.1",
+    "vue-router": "^4.0.0-rc.1",
+    "vuex": "^4.0.0-beta.4"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.0-rc.1",
+    "babel-plugin-import": "^1.13.1",
+    "eslint": "^7.12.0",
+    "eslint-plugin-vue": "^7.1.0",
+    "less": "^3.12.2",
+    "typescript": "^4.0.3",
+    "vite": "^1.0.0-rc.1"
+  }
+}
