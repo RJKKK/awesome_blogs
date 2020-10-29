@@ -6,8 +6,10 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@ant-design-vue/use": "^0.0.1-alpha.6",
     "@ant-design/colors": "^4.0.5",
     "ant-design-vue": "^2.0.0-beta.10",
+    "axios": "^0.21.0",
     "vue": "^3.0.0-rc.1",
     "vue-router": "^4.0.0-rc.1",
     "vuex": "^4.0.0-beta.4"

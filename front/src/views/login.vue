@@ -2,19 +2,17 @@
    <div class="main">
       <div class="login_window">
          <div class="content">
-            <a-form layout="inline" :model="model" @submit="handleSubmit" @submit.native.prevent>
-               <a-form-item>
+            <h1>欢迎</h1>
+            <a-form layout="block" @submit="handleSubmit" @submit.native.prevent>
+               <a-form-item v-bind="validateInfos.account">
                   <a-input v-model:value="model.account" placeholder="输入用户名" />
                </a-form-item>
-               <a-form-item>
+               <a-form-item v-bind="validateInfos.password" >
                   <a-input v-model:value="model.password" placeholder="输入密码" />
                </a-form-item>
-               <a-form-item>
-                  <a-button
-                          type="primary"
-                          html-type="submit"
-                  >
-                     Log in
+               <a-form-item >
+                  <a-button type="primary" html-type="submit">
+                     登录
                   </a-button>
                </a-form-item>
             </a-form>
@@ -25,9 +23,10 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent,reactive,toRefs} from "vue"
+    import {defineComponent,reactive} from "vue"
+    import { useForm } from '@ant-design-vue/use';
     import {loginForm} from "../formInterfaces";
-    import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+    import {account,password} from "../untils/FormValidation";
 
     export default defineComponent( {
         name: "login",
@@ -36,12 +35,14 @@
               password:"",
               account:""
            })
-           const handleSubmit = ():unknown => {
-               console.log(model)
+           const rules = reactive({account,password})
+           const { resetFields, validate, validateInfos } = useForm(model, rules);
+           const handleSubmit =  () => {
+               validate().then(()=>console.log(validateInfos)).catch(err=>console.log(err))
            }
 
          return {
-              model,handleSubmit
+              model,handleSubmit,validateInfos
          }
         }
     })

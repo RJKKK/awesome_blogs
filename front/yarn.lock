@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ant-design-vue/use@^0.0.1-0":
+"@ant-design-vue/use@^0.0.1-0", "@ant-design-vue/use@^0.0.1-alpha.6":
   version "0.0.1-alpha.6"
-  resolved "https://registry.yarnpkg.com/@ant-design-vue/use/-/use-0.0.1-alpha.6.tgz#eafce73abcc7d2736dcbfff1e396c69b84b9e840"
-  integrity sha512-vyLeiVbi4KdCvkRhHFGyYhe2bZ6y0RJupw7+bdCGRrx4oHb/Rsm8MTqs8Nl1k0lX9qQIvNAoa6Rxf3FQH6nI7g==
+  resolved "https://registry.npm.taobao.org/@ant-design-vue/use/download/@ant-design-vue/use-0.0.1-alpha.6.tgz#eafce73abcc7d2736dcbfff1e396c69b84b9e840"
+  integrity sha1-6vznOrzH0nNty//x45bGm4S56EA=
   dependencies:
     "@vue/runtime-dom" "^3.0.0-rc.1"
     async-validator "^3.4.0"
@@ -539,6 +539,13 @@ at-least-node@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
+
+axios@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.0.tgz?cache=0&sync_timestamp=1603470451980&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faxios%2Fdownload%2Faxios-0.21.0.tgz#26df088803a2350dff2c27f96fef99fe49442aca"
+  integrity sha1-Jt8IiAOiNQ3/LCf5b++Z/klEKso=
+  dependencies:
+    follow-redirects "^1.10.0"
 
 babel-helper-vue-jsx-merge-props@^2.0.3:
   version "2.0.3"
@@ -1234,7 +1241,7 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.10.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
