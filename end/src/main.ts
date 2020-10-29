@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.use(new LoggerMiddleware().use)
-  app.enableCors()
+  // app.enableCors()
   const options = new DocumentBuilder()
     .setTitle('云盘API文档')
     .setDescription('author:kun')

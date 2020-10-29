@@ -11,6 +11,7 @@ export class AuthService {
 
   async validateUser(account,pass):Promise<statusCode|any>{
     const user:any = await this.accountsService.findOneForLogin(account);
+    console.log(user)
     if(!user){
       return statusCode.NOT_ACCOUNT
     }

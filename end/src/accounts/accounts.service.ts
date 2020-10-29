@@ -13,13 +13,13 @@ export class AccountsService {
   }
 
   async findOneForLogin(account: string) {
-    const res = await this.accountModel.findOne({ userId: account })
+    const res = await this.accountModel.findOne({ account: account })
     return res
   }
 
   async createAccount(dto: CreateAccountDto) {
     const res = await this.accountModel.findOneAndUpdate(
-      { $or: [{ userId: dto.account }, { email: dto.email }] },
+      { $or: [{ account: dto.account }, { email: dto.email }] },
       { $setOnInsert: dto },
       { upsert: true })
     return res
