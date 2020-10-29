@@ -3,12 +3,20 @@
 // function pathResolve(dir: string) {
 //     return resolve(__dirname, ".", dir);
 // }
-
-module.exports = {
+// import {ResolvedConfig} from 'vite'
+module.exports  =  {
     // alias: {
     //     "/@/": pathResolve("src"),
     // },
     optimizeDeps: {
         include: ["@ant-design/icons-vue"],
     },
-};
+    proxy:{
+        "/api":{
+            target:'http://localhost:3001',
+            changeOrigin:true,
+            rewrite:path => path.replace(/^\/api/, '')
+        }
+    }
+
+}

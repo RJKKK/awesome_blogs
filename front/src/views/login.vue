@@ -8,7 +8,7 @@
                   <a-input v-model:value="model.account" placeholder="输入用户名" />
                </a-form-item>
                <a-form-item v-bind="validateInfos.password" >
-                  <a-input v-model:value="model.password" placeholder="输入密码" />
+                  <a-input v-model:value="model.password" type="password" placeholder="输入密码" />
                </a-form-item>
                <a-form-item >
                   <a-button type="primary" html-type="submit">
@@ -24,23 +24,15 @@
 
 <script lang="ts">
     import {defineComponent,reactive} from "vue"
-    import { useForm } from '@ant-design-vue/use';
+    import {useFormSet} from "../hooks";
+    import {loginApi} from "../api";
     import {loginForm} from "../formInterfaces";
-    import {account,password} from "../untils/FormValidation";
 
     export default defineComponent( {
         name: "login",
         setup(){
-           const model = reactive<loginForm>({
-              password:"",
-              account:""
-           })
-           const rules = reactive({account,password})
-           const { resetFields, validate, validateInfos } = useForm(model, rules);
-           const handleSubmit =  () => {
-               validate().then(()=>console.log(validateInfos)).catch(err=>console.log(err))
-           }
-
+           const { resetFields, validate, validateInfos,handleSubmit,model }
+           = useFormSet<loginForm>({password:'',account:''},loginApi)
          return {
               model,handleSubmit,validateInfos
          }
