@@ -41,6 +41,7 @@
 </script>
 
 <style scoped lang="less">
+
    @keyframes swing {
       0% {
          transform: rotateZ(-1deg);
@@ -50,6 +51,7 @@
       }
    }
 .main{
+   font-family:'curcle';
    width: 100vw;
    height: 100vh;
    display: flex;
@@ -66,21 +68,21 @@
 .login_window{
    transform-origin: center top;
    animation: swing 2s infinite ease-in-out alternate;
-   width: 25vw;
+   width: 300px;
    height: 450px;
    box-sizing: content-box;
    background-image:url(../assets/components/concept_y_top.gif),
                     url(../assets/components/concept_y_bottom.gif),
                     url(../assets/components/concept_y_bg.png);
    background-repeat: no-repeat, no-repeat,repeat;
-   background-size: 25vw auto, 25vw auto, 25vw auto;
+   background-size: 300px auto, 300px auto, 300px auto;
    background-position: top, bottom,center;
    /*background-clip: padding-box;*/
    >.content{
       box-sizing: border-box;
       width: inherit;
       height: inherit;
-      padding: calc( 25  / 366 * 55 * 1vw) 30px calc( 25  / 366 * 45 * 1vw) 30px;
+      padding: calc( 300  / 366 * 55 * 1px) 30px calc( 300  / 366 * 45 * 1px) 30px;
    }
 }
 </style>
