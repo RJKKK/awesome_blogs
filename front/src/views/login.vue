@@ -2,7 +2,7 @@
    <div class="main">
       <div class="login_window">
          <div class="content">
-            <h1>欢迎</h1>
+            <h1>欢迎你 (≧▽≦)/ </h1>
             <a-form layout="block" @submit="handleSubmit" @submit.native.prevent>
                <a-form-item v-bind="validateInfos.account">
                   <a-input v-model:value="model.account" placeholder="输入用户名" />
@@ -27,12 +27,18 @@
     import {useFormSet} from "../hooks";
     import {loginApi} from "../api";
     import {loginForm} from "../formInterfaces";
+    import {LoginRes} from "../responseInterfaces";
+    import {setToken} from "../untils/cookies";
 
     export default defineComponent( {
         name: "login",
         setup(){
            const { resetFields, validate, validateInfos,handleSubmit,model }
-           = useFormSet<loginForm>({password:'',account:''},loginApi)
+           = useFormSet<loginForm,LoginRes>({password:'',account:''},loginApi,
+            res=>{
+               setToken(res.token)
+            }
+           )
          return {
               model,handleSubmit,validateInfos
          }
@@ -41,7 +47,6 @@
 </script>
 
 <style scoped lang="less">
-
    @keyframes swing {
       0% {
          transform: rotateZ(-1deg);
@@ -51,7 +56,6 @@
       }
    }
 .main{
-   font-family:'curcle';
    width: 100vw;
    height: 100vh;
    display: flex;
@@ -78,11 +82,15 @@
    background-size: 300px auto, 300px auto, 300px auto;
    background-position: top, bottom,center;
    /*background-clip: padding-box;*/
-   >.content{
-      box-sizing: border-box;
+}
+   .content{
+      >h1{
+         text-align: center;
+         color: #4d4d4d;
+      }
+
       width: inherit;
       height: inherit;
       padding: calc( 300  / 366 * 55 * 1px) 30px calc( 300  / 366 * 45 * 1px) 30px;
    }
-}
 </style>

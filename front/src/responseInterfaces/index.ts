@@ -1,3 +1,3 @@
-export interface userLoginRes {
-
+export interface LoginRes {
+   token:string
 }

@@ -9,7 +9,7 @@ module.exports  =  {
     //     "/@/": pathResolve("src"),
     // },
     optimizeDeps: {
-        include: ["@ant-design/icons-vue"],
+        include: ["@ant-design/icons-vue","js-cookie"],
     },
     proxy:{
         "/api":{
