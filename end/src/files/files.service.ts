@@ -25,7 +25,7 @@ export class FilesService {
     console.log(id);
 
     const result = await this.fileModel
-      .findById('5e9cdb49194ba358bd9a7da5').catch( err => {throw new HttpException('File not found', HttpStatus.NOT_FOUND)} )
+      .findById(id).catch( err => {throw new HttpException('File not found', HttpStatus.NOT_FOUND)} )
       .then(result => result)
     return {
       filename: result.filename,
