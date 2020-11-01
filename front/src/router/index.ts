@@ -1,4 +1,4 @@
-import { RouteRecordRaw, createRouter, createWebHistory,onBeforeRouteUpdate } from 'vue-router';
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 import {getToken} from "../untils/cookies";
 
 const routes:RouteRecordRaw[] = [{

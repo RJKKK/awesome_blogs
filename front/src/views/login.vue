@@ -23,20 +23,28 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent,reactive} from "vue"
+    import {defineComponent} from "vue"
     import {useFormSet} from "../hooks";
     import {loginApi} from "../api";
     import {loginForm} from "../formInterfaces";
     import {LoginRes} from "../responseInterfaces";
+    import { useRouter} from 'vue-router'
     import {setToken} from "../untils/cookies";
 
     export default defineComponent( {
         name: "login",
         setup(){
+           const $router = useRouter()
            const { resetFields, validate, validateInfos,handleSubmit,model }
-           = useFormSet<loginForm,LoginRes>({password:'',account:''},loginApi,
+           = useFormSet<loginForm,LoginRes>(
+                   {
+                      password:'',
+                      account:''
+                   }, loginApi,
             res=>{
                setToken(res.token)
+               console.log($router)
+               $router.replace('/')
             }
            )
          return {
