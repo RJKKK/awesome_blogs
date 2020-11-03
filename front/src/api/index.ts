@@ -1,6 +1,6 @@
 import {post} from "../untils/fetchData";
-import {LoginRes,LoginResApi} from "../responseInterfaces";
-export const loginApi:LoginResApi= async (data) => {
+import {LoginRes,UserInfoRes,LoginResApiFunction} from "../responseInterfaces";
+export const loginApi:LoginResApiFunction= async (data) => {
     const res = await post<LoginRes>('auth/login', data)
     return res.data
 }
