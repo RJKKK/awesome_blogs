@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    username: yangjianwei
+    password: yangjianwei666
+    url: jdbc:mysql://rm-bp151393ejp8188wzgo.mysql.rds.aliyuncs.com:3306/awesome_blogs?serverTimezone=UTC&userUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionoProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+mybatis:
+  type-aliases-package: com.blog.pojo
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 8088
