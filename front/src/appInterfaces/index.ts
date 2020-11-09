@@ -3,20 +3,23 @@ export enum AssemblyType {
     text,
     sticker
 }
-interface Assembly {
-    id: string
+export interface Assembly {
+    id: number
     componentType: AssemblyType
-    stickerCenterX: number
-    stickerCenterY: number
-    zIndex: number
+    stickerMoveX: number
+    stickerMoveY: number
+    width?:number
+    height?:number
+    zIndex?: number
     scale: number
     rotate: number
-    stickerId?: string
+    stickerId: number
     text?: string
     imageUrl?: string
-    whScale?: number
 }
 export interface Journal {
     backgroundId: string | number
+    backgroundWidth:number
+    backgroundHeight:number
     Assemblies: Assembly[]
 }

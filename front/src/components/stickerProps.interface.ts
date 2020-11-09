@@ -42,6 +42,26 @@ const afv:PropsObj = {
     },
     imageTag: {
         type: String,
+    },
+    backgroundWidth:{
+        type:Number,
+        required:true,
+        default:0
+    },
+    backgroundHeight:{
+        type:Number,
+        required:true,
+        default:0
+    },
+    width:{
+        type:Number,
+        required:true,
+        default:0
+    },
+    height:{
+        type:Number,
+        required:true,
+        default:0
     }
 }
 export default afv as any
