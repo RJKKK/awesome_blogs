@@ -1,14 +1,14 @@
-import { loginForm} from "../formInterfaces";
+import { loginForm } from "../formInterfaces";
 
 export interface LoginRes {
-   token:string
+   token: string
 }
 export interface UserInfoRes {
-   account:string
-   avatar:string
-   username:string
-   email:string
+   account: string
+   avatar: string
+   username: string
+   email: string
 }
-export interface LoginResApiFunction{
-   (data:any):Promise<LoginRes>
+export interface LoginResApiFunction {
+   (data: any): Promise<LoginRes>
 }
