@@ -34,18 +34,17 @@
     .main {
         width: 200px;
         height: 200px;
-        /*top:var(--currentY);*/
-        /*left:var(--currentX);*/
+        transform: translate(calc(var(--moveX) - 50%), calc(var(--moveY) - 50%));
         position: absolute;
         background-color: var(--color);
     }
 
     .selected {
-        transform: translate(calc(var(--moveX) - 50%), calc(var(--moveY) - 50%));
+        /*transform: translate(calc(var(--moveX) - 50%), calc(var(--moveY) - 50%));*/
     }
 
     .unselect {
-        transform: translate(0px, 0px);
+        /*transform: translate(0px, 0px);*/
     }
 
     #sad {

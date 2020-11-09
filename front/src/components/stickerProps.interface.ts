@@ -42,6 +42,6 @@ const afv:PropsObj = {
     },
     imageTag: {
         type: String,
-    },
+    }
 }
 export default afv as any
