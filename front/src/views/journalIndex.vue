@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent,ref,reactive,onMounted} from "vue";
+    import {defineComponent,ref,reactive,onMounted,onUpdated} from "vue";
     import sticker from "../components/sticker.vue";
     import {Journal} from "../appInterfaces";
 
@@ -42,7 +42,8 @@
             })
             onMounted(()=>{
                 offsetX.value = price.value.offsetLeft
-                offsetY.value = price.value.offsetTop===0?price.value.scrollTop:price.value.offsetTop;
+                offsetY.value = price.value.offsetTop===0?document.body.scrollTop:price.value.offsetTop;
+                console.log(price.value.offsetLeft)
             })
             return {dataSource,price,offsetX,offsetY}
         }
@@ -54,6 +55,7 @@
         width: 700px;
         height: 800px;
         background: aqua;
-        margin: 50px;
+        margin-top: 50px;
+        margin-left: 50px;
     }
 </style>
