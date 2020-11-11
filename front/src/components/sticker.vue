@@ -9,7 +9,7 @@
 
 <script lang="ts">
     import {defineComponent, computed, ref, onMounted} from "vue";
-    import {useMouse} from '../hooks'
+    import {useMouse,useElementProxy} from '../hooks'
     import {Assembly} from '../appInterfaces'
     import {getStyleDeg, getStylePx} from "../untils/helper";
 
@@ -43,40 +43,42 @@
         setup(props, context) {
             const element = ref<HTMLElement>(null)
             const selected = ref<boolean>(false)
-            const {x, y, stopListen, startListen} = useMouse()
-            const moveX = computed<number>({
-                get: () => {
-                    if (x.value - props.backgroundOffsetX <= (props.config.width / 2))
-                        return 0
-                    else if (x.value - props.backgroundOffsetX >= props.backgroundWidth - props.config.width / 2)
-                        return props.backgroundWidth - props.config.width
-                    else return x.value - props.backgroundOffsetX - props.config.width / 2
-                }, set: (val: number) => {
-                    x.value = val
-                }
-            })
-            const moveY = computed<number>({
-                get: () => {
-                    if (y.value - props.backgroundOffsetY <= props.config.height / 2)
-                        return 0
-                    else if (y.value - props.backgroundOffsetY >= props.backgroundHeight - (props.config.height / 2))
-                        return props.backgroundHeight - props.config.height
-                    else return y.value - props.backgroundOffsetY - props.config.height / 2
-                }, set: (val: number) => {
-                    y.value = val
-                }
-            })
+            const {x, y, moveX,moveY,stopAndGetData, startListen} = useElementProxy(props.config.stickerMoveX,
+                props.config.stickerMoveY,element)
+
+            // const moveX = computed<number>({
+            //     get: () => {
+            //         if (x.value - props.backgroundOffsetX <= (props.config.width / 2))
+            //             return 0
+            //         else if (x.value - props.backgroundOffsetX >= props.backgroundWidth - props.config.width / 2)
+            //             return props.backgroundWidth - props.config.width
+            //         else return x.value - props.backgroundOffsetX - props.config.width / 2
+            //     }, set: (val: number) => {
+            //         x.value = val
+            //     }
+            // })
+            // const moveY = computed<number>({
+            //     get: () => {
+            //         if (y.value - props.backgroundOffsetY <= props.config.height / 2)
+            //             return 0
+            //         else if (y.value - props.backgroundOffsetY >= props.backgroundHeight - (props.config.height / 2))
+            //             return props.backgroundHeight - props.config.height
+            //         else return y.value - props.backgroundOffsetY - props.config.height / 2
+            //     }, set: (val: number) => {
+            //         y.value = val
+            //     }
+            // })
             const styleWidth = computed<string>(() => getStylePx(props.config.width))
             const styleHeight = computed<string>(() => getStylePx(props.config.height))
             const styleMoveX = computed<string>(() => getStylePx(moveX.value))
             const styleMoveY = computed<string>(() => getStylePx(moveY.value))
-            onMounted(() => {
-                console.log(element.value)
-                moveX.value = props.config.width
-                moveY.value = props.config.height
-            })
+            // onMounted(() => {
+            //     console.log(element.value)
+            //     moveX.value = props.config.width
+            //     moveY.value = props.config.height
+            // })
             const dragFn = () => {
-                selected.value ? stopListen() : startListen()
+                selected.value ? stopAndGetData() : startListen()
                 selected.value = !selected.value
             }
             const color = 'red'

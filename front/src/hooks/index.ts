@@ -37,7 +37,7 @@ export function useMouse() {
     return {x, y, startListen, stopListen}
 }
 
-export function useElementProxy(proxyX: number, proxyY: number, element: HTMLElement) {
+export function useElementProxy(proxyX: number, proxyY: number, element: Ref<HTMLElement>) {
     const {x, y, startListen, stopListen} = useMouse()
     const backgroundWidth = ref<number>(0)
     const backgroundHeight = ref<number>(0)
@@ -48,7 +48,7 @@ export function useElementProxy(proxyX: number, proxyY: number, element: HTMLEle
 
     const moveX = computed<number>({
         get: () => {
-            if (x.value - backgroundOffsetX.value <= backgroundWidth.value / 2)
+            if (x.value - backgroundOffsetX.value <= width.value / 2)
                 return 0
             else if (x.value - backgroundOffsetX.value >= backgroundWidth.value - width.value / 2)
                 return backgroundWidth.value - width.value
@@ -59,7 +59,7 @@ export function useElementProxy(proxyX: number, proxyY: number, element: HTMLEle
     })
     const moveY = computed<number>({
         get: () => {
-            if (y.value - backgroundOffsetY.value <= backgroundHeight.value / 2)
+            if (y.value - backgroundOffsetY.value <= height.value / 2)
                 return 0
             else if (y.value - backgroundOffsetY.value >= backgroundHeight.value - height.value / 2)
                 return backgroundHeight.value - width.value
@@ -69,18 +69,19 @@ export function useElementProxy(proxyX: number, proxyY: number, element: HTMLEle
         }
     })
     onMounted(() => {
-        width.value = element.offsetWidth
-        height.value = element.offsetHeight
+        width.value = element.value.offsetWidth
+        height.value = element.value.offsetHeight
+        backgroundWidth.value = element.value.parentElement.offsetWidth
+        backgroundHeight.value = element.value.parentElement.offsetHeight
+        backgroundOffsetX.value = element.value.parentElement.offsetLeft
+        backgroundOffsetY.value = element.value.parentElement.offsetTop
+        console.log( proxyX + width.value / 2, backgroundOffsetX.value,backgroundWidth.value / 2)
         moveX.value = proxyX + width.value / 2
         moveY.value = proxyY + height.value / 2
-        backgroundWidth.value = element.parentElement.offsetWidth
-        backgroundHeight.value = element.parentElement.offsetHeight
-        backgroundOffsetX.value = element.parentElement.offsetLeft
-        backgroundOffsetY.value = element.parentElement.offsetTop
     })
     const stopAndGetData: () => { centerX: number, centerY: number } = () => {
         stopListen()
         return {centerX: x.value, centerY: y.value}
     }
-    return{stopAndGetData,startListen}
+    return{stopAndGetData,startListen,x,y,moveX,moveY}
 }
