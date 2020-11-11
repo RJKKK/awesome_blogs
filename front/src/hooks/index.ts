@@ -1,4 +1,5 @@
-import {reactive, onMounted, onUnmounted, ref} from 'vue'
+import {reactive, onMounted, onUnmounted, ref, computed,Ref} from 'vue'
+import {getStyleDeg, getStylePx} from "../untils/helper";
 import * as params from "../untils/FormValidation";
 import {useForm} from "@ant-design-vue/use";
 
@@ -34,4 +35,52 @@ export function useMouse() {
     // onMounted(()=>startListen())
     onUnmounted(() => stopListen())
     return {x, y, startListen, stopListen}
+}
+
+export function useElementProxy(proxyX: number, proxyY: number, element: HTMLElement) {
+    const {x, y, startListen, stopListen} = useMouse()
+    const backgroundWidth = ref<number>(0)
+    const backgroundHeight = ref<number>(0)
+    const backgroundOffsetX = ref<number>(0)
+    const backgroundOffsetY = ref<number>(0)
+    const width = ref<number>(0)
+    const height = ref<number>(0)
+
+    const moveX = computed<number>({
+        get: () => {
+            if (x.value - backgroundOffsetX.value <= backgroundWidth.value / 2)
+                return 0
+            else if (x.value - backgroundOffsetX.value >= backgroundWidth.value - width.value / 2)
+                return backgroundWidth.value - width.value
+            else return x.value - backgroundOffsetX.value - width.value / 2
+        }, set: (xVal) => {
+            x.value = xVal
+        }
+    })
+    const moveY = computed<number>({
+        get: () => {
+            if (y.value - backgroundOffsetY.value <= backgroundHeight.value / 2)
+                return 0
+            else if (y.value - backgroundOffsetY.value >= backgroundHeight.value - height.value / 2)
+                return backgroundHeight.value - width.value
+            else return y.value - backgroundOffsetY.value - height.value / 2
+        }, set: (yVal) => {
+            y.value = yVal
+        }
+    })
+    onMounted(() => {
+        width.value = element.offsetWidth
+        height.value = element.offsetHeight
+        moveX.value = proxyX + width.value / 2
+        moveY.value = proxyY + height.value / 2
+        backgroundWidth.value = element.parentElement.offsetWidth
+        backgroundHeight.value = element.parentElement.offsetHeight
+        backgroundOffsetX.value = element.parentElement.offsetLeft
+        backgroundOffsetY.value = element.parentElement.offsetTop
+    })
+    const stopAndGetData: () => { centerX: number, centerY: number } = () => {
+        stopListen()
+        return {centerX: x.value, centerY: y.value}
+    }
+    return{stopAndGetData,startListen}
 }

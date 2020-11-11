@@ -1,6 +1,6 @@
 <template>
 
-    <div :class="`main ${selected?'selected':'unselect'}`"
+    <div ref="element" :class="`main ${selected?'selected':'unselect'}`"
          @click.stop="dragFn">{{styleMoveX}}|{{styleMoveY}}
     </div>
 
@@ -41,6 +41,7 @@
 
         },
         setup(props, context) {
+            const element = ref<HTMLElement>(null)
             const selected = ref<boolean>(false)
             const {x, y, stopListen, startListen} = useMouse()
             const moveX = computed<number>({
@@ -70,7 +71,7 @@
             const styleMoveX = computed<string>(() => getStylePx(moveX.value))
             const styleMoveY = computed<string>(() => getStylePx(moveY.value))
             onMounted(() => {
-                console.log(props.config);
+                console.log(element.value)
                 moveX.value = props.config.width
                 moveY.value = props.config.height
             })
@@ -79,7 +80,7 @@
                 selected.value = !selected.value
             }
             const color = 'red'
-            return {color, styleMoveX, styleMoveY, dragFn, selected, styleWidth, styleHeight}
+            return {color, styleMoveX, styleMoveY, dragFn, selected, styleWidth, styleHeight,element}
         },
     });
 </script>
