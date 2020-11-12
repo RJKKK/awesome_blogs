@@ -75,7 +75,6 @@ export function useElementProxy(proxyX: number, proxyY: number, element: Ref<HTM
         backgroundHeight.value = element.value.parentElement.offsetHeight
         backgroundOffsetX.value = element.value.parentElement.offsetLeft
         backgroundOffsetY.value = element.value.parentElement.offsetTop
-        console.log( proxyX + width.value / 2, backgroundOffsetX.value,backgroundWidth.value / 2)
         moveX.value = proxyX + width.value / 2
         moveY.value = proxyY + height.value / 2
     })
@@ -84,4 +83,8 @@ export function useElementProxy(proxyX: number, proxyY: number, element: Ref<HTM
         return {centerX: x.value, centerY: y.value}
     }
     return{stopAndGetData,startListen,x,y,moveX,moveY}
+}
+
+export function f() {
+
 }
