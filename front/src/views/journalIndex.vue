@@ -23,22 +23,34 @@
             const offsetX = ref<number>(0)
             const offsetY = ref<number>(0)
             const dataSource = reactive<Journal>({
-                backgroundId:9,
-                backgroundWidth:700,
-                backgroundHeight:800,
-                Assemblies:[{
-                    id:0,
-                    scale:1,
-                    imageUrl:'',
-                    rotate:0,
-                    height:200,
-                    width:200,
-                    stickerMoveY:345,
-                    stickerMoveX:234,
-                    stickerId:0,
-                    componentType:1,
-                    zIndex:0,
-                }]
+                    backgroundId:9,
+                    backgroundWidth:700,
+                    backgroundHeight:800,
+                    Assemblies:[{
+                        id:0,
+                        scale:1,
+                        imageUrl:'',
+                        rotate:0,
+                        height:200,
+                        width:200,
+                        stickerMoveY:345,
+                        stickerMoveX:234,
+                        stickerId:0,
+                        componentType:1,
+                        zIndex:0,
+                    },{
+                        id:1,
+                        scale:1,
+                        imageUrl:'',
+                        rotate:0,
+                        height:200,
+                        width:200,
+                        stickerMoveY:35,
+                        stickerMoveX:34,
+                        stickerId:0,
+                        componentType:1,
+                        zIndex:0,
+                    }]
             })
             onMounted(()=>{
                 offsetX.value = price.value.offsetLeft
