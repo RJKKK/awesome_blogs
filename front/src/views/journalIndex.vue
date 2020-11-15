@@ -69,5 +69,7 @@
         background: aqua;
         margin-top: 50px;
         margin-left: 50px;
+        overflow: hidden;
+        position: relative;
     }
 </style>
