@@ -6,8 +6,8 @@ export enum AssemblyType {
 export interface Assembly {
     id: number
     componentType: AssemblyType
-    stickerMoveX: number
-    stickerMoveY: number
+    centerX: number
+    centerY: number
     width?:number
     height?:number
     zIndex?: number

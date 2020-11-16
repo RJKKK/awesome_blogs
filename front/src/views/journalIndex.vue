@@ -1,9 +1,10 @@
 <template>
-    <div id="sad" ref="price">
-    <sticker v-for="item in dataSource.Assemblies"
+    <div id="sad" >
+    <sticker v-for="(item,index) in dataSource.Assemblies"
              :background-offset-x="offsetX"
              :background-offset-y="offsetY"
-             :config="item" :key="item.id"></sticker>
+             @check="mycheck"
+             v-model:config="dataSource.Assemblies[index]" :key="index"></sticker>
     </div>
 </template>
 
@@ -17,9 +18,12 @@
             sticker,
         },
         setup(){
-            const price = ref<HTMLElement>(null)
             const offsetX = ref<number>(0)
             const offsetY = ref<number>(0)
+            const mycheck = (val)=>{
+                console.log(val)
+                console.log(dataSource)
+            }
             const dataSource = reactive<Journal>({
                     backgroundId:9,
                     Assemblies:[{
@@ -29,8 +33,8 @@
                         rotate:0,
                         height:200,
                         width:200,
-                        stickerMoveY:345,
-                        stickerMoveX:234,
+                        centerX:345,
+                        centerY:234,
                         stickerId:0,
                         componentType:1,
                         zIndex:0,
@@ -41,19 +45,18 @@
                         rotate:0,
                         height:200,
                         width:200,
-                        stickerMoveY:35,
-                        stickerMoveX:34,
+                        centerX:35,
+                        centerY:34,
                         stickerId:0,
                         componentType:1,
                         zIndex:0,
                     }]
             })
             onMounted(()=>{
-                offsetX.value = price.value.offsetLeft
-                offsetY.value = price.value.offsetTop===0?document.body.scrollTop:price.value.offsetTop;
-                console.log(price.value.offsetLeft)
+                offsetX.value = 1
+                offsetY.value = 0;
             })
-            return {dataSource,price,offsetX,offsetY}
+            return {dataSource,offsetX,offsetY,mycheck}
         }
     });
 </script>
