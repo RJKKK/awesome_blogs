@@ -19,7 +19,5 @@ export interface Assembly {
 }
 export interface Journal {
     backgroundId: string | number
-    backgroundWidth:number
-    backgroundHeight:number
     Assemblies: Assembly[]
 }

@@ -1,19 +1,22 @@
 <template>
-    <div ref="element" :class="`main ${selected?'selected':'unselect'}`"
-         @click.stop.prevent="dragFn">
+    <div ref="element"  :class="`main ${selected?'selected':'unselect'}`"
+
+    >
         <div id="scale"
-             @click.stop.prevent="scaleStart(props.config.stickerMoveX,props.config.stickerMoveY,$event)"></div>
+             @mousedown.stop.prevent.self="scaleStart(props.config.stickerMoveX,props.config.stickerMoveY,$event)"
+
+        ></div>
         <div id="delete"></div>
         <div id="rotate"
-             @click.stop.prevent="startRotate(props.config.stickerMoveX,props.config.stickerMoveY,$event)"
+             @mousedown.stop.prevent.self="startRotate(props.config.stickerMoveX,props.config.stickerMoveY,$event)"
         ></div>
-        <img id="image" src="https://api.r10086.com/CG系列1.php" alt="随机图片" style="width: 100%;height: 100%">
+        <img id="image" @click.stop.prevent.self="dragFn" src="https://api.r10086.com/CG系列1.php" alt="随机图片" style="width: 100%;height: 100%">
     </div>
 </template>
 
 <script lang="ts">
-    import {defineComponent, computed, ref, onMounted} from "vue";
-    import {useMouse, useElementProxy, useElementScale, useElementRotate} from '../hooks'
+    import {defineComponent, computed, ref, onMounted,onBeforeMount} from "vue";
+    import { useElementProxy, useElementScale, useElementRotate} from '../hooks'
     import {Assembly} from '../appInterfaces'
     import {getStyleDeg, getStylePx} from "../untils/helper";
 
@@ -37,11 +40,7 @@
                         id: 0
                     } as Assembly
                 },
-            },
-            backgroundWidth: {type: Number, required: true, default: 0},
-            backgroundHeight: {type: Number, required: true, default: 0},
-            backgroundOffsetX: {type: Number, required: true, default: 0},
-            backgroundOffsetY: {type: Number, required: true, default: 0},
+            }
 
         },
         setup(props, context) {
@@ -50,22 +49,28 @@
             const {x, y, moveX, moveY, stopAndGetData, startListen} = useElementProxy(
                 props.config.stickerMoveX, props.config.stickerMoveY, element
             )
-            const {scale, scaleStart} = useElementScale(element)
-            const {deg, startRotate} = useElementRotate(element)
+            const {scale, scaleStart,scaleStop} = useElementScale(element)
+            const {deg, startRotate,stopRotate} = useElementRotate(element)
             const styleWidth = computed<string>(() => getStylePx(props.config.width))
             const styleHeight = computed<string>(() => getStylePx(props.config.height))
             const styleMoveX = computed<string>(() => getStylePx(moveX.value))
             const styleMoveY = computed<string>(() => getStylePx(moveY.value))
             const styleDeg = computed<string>(() => getStyleDeg(deg.value))
-            const dragFn = (e: MouseEvent) => {
+            const stopDoing = () =>{
+                scaleStop()
+                stopRotate()
+            }
+            const dragFn = () => {
                 selected.value ? stopAndGetData() : startListen()
-                console.log(props.config)
                 selected.value = !selected.value
             }
-
+            onMounted(()=>{
+                document.body.addEventListener('mouseup',stopDoing)
+            })
+            onBeforeMount(()=>document.body.removeEventListener('mouseup',stopDoing))
             return {
                 styleMoveX, styleMoveY,
-                dragFn, scaleStart, startRotate,
+                dragFn, scaleStart, startRotate,scaleStop,
                 selected, styleWidth, styleHeight,
                 element, props, scale, styleDeg
             }

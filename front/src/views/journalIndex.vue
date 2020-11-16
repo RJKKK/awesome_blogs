@@ -1,8 +1,6 @@
 <template>
     <div id="sad" ref="price">
     <sticker v-for="item in dataSource.Assemblies"
-             :background-height="dataSource.backgroundHeight"
-             :background-width="dataSource.backgroundWidth"
              :background-offset-x="offsetX"
              :background-offset-y="offsetY"
              :config="item" :key="item.id"></sticker>
@@ -24,8 +22,6 @@
             const offsetY = ref<number>(0)
             const dataSource = reactive<Journal>({
                     backgroundId:9,
-                    backgroundWidth:700,
-                    backgroundHeight:800,
                     Assemblies:[{
                         id:0,
                         scale:1,

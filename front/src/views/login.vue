@@ -4,10 +4,12 @@
             <div class="content">
                 <h1>欢迎你 (≧▽≦)/</h1>
                 <a-form layout="block" @submit="handleSubmit" @submit.native.prevent>
-                    <a-form-item v-bind="validateInfos.account">
+                    <a-form-item v-bind="validateInfos.account" class="my-input">
+                        <FormOutlined style="font-size:28px;color: rgba(0, 0, 0,.25);line-height: inherit"/>
                         <a-input v-model:value="model.account" placeholder="输入用户名"/>
                     </a-form-item>
-                    <a-form-item v-bind="validateInfos.password">
+                    <a-form-item v-bind="validateInfos.password" class="my-input">
+                        <LockOutlined style="font-size:28px;color: rgba(0, 0, 0,.25);line-height: inherit"/>
                         <a-input
                                 v-model:value="model.password"
                                 type="password"
@@ -15,8 +17,11 @@
                         />
                     </a-form-item>
                     <a-form-item>
-                        <a-button type="primary" html-type="submit"> 登录</a-button>
+                        <a-button type="dashed" shape="round" block html-type="submit" style="margin-bottom: 10px"> 登录
+                        </a-button>
+                        <a-button type="dashed" shape="round" block>注册</a-button>
                     </a-form-item>
+
                 </a-form>
             </div>
         </div>
@@ -31,9 +36,11 @@
     import {LoginRes} from "../responseInterfaces";
     import {useRouter} from "vue-router";
     import {setToken} from "../untils/cookies";
+    import {FormOutlined, LockOutlined} from '@ant-design/icons-vue';
 
     export default defineComponent({
         name: "login",
+        components: {FormOutlined, LockOutlined},
         setup() {
             const $router = useRouter();
             const {
@@ -107,10 +114,24 @@
         > h1 {
             text-align: center;
             color: #4d4d4d;
+            margin-bottom: 40px;
         }
 
         width: inherit;
         height: inherit;
         padding: calc(300 / 366 * 55 * 1px) 30px calc(300 / 366 * 45 * 1px) 30px;
+    }
+
+    .my-input ::v-deep .ant-form-item-children {
+        display: flex;
+        justify-content: space-between;
+
+        > span {
+            flex: 1;
+        }
+
+        > input {
+            flex: 6;
+        }
     }
 </style>

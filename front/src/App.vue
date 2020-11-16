@@ -20,7 +20,7 @@
         font-family: 'curcle';
     }
 
-    /deep/ .ant-spin-container {
+    ::v-deep .ant-spin-container {
         overflow: hidden
     }
 </style>
