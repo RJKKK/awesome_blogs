@@ -1,22 +1,25 @@
 <template>
-    <div ref="element"  :class="`main ${selected?'selected':'unselect'}`"
+    <div ref="element" class="main"
 
     >
         <div id="scale"
-             @mousedown.stop.prevent.self="scaleStart(props.config.stickerMoveX,props.config.stickerMoveY,$event)"
-
+             @mousedown.stop.prevent.self="scaleStart(centerX,centerY,$event)"
+             @mouseup.stop.self="scaleStop"
         ></div>
         <div id="delete"></div>
         <div id="rotate"
-             @mousedown.stop.prevent.self="startRotate(props.config.stickerMoveX,props.config.stickerMoveY,$event)"
+             @mousedown.stop.prevent.self="startRotate(centerX,centerY,$event)"
+             @mouseup.stop.self="stopRotate"
         ></div>
-        <img id="image" @click.stop.prevent.self="dragFn" src="https://api.r10086.com/CG系列1.php" alt="随机图片" style="width: 100%;height: 100%">
+        <img id="image" @mousedown.stop.prevent.self="startListen" src="https://api.r10086.com/CG系列1.php" alt="随机图片"
+             @mouseup.stop.self="stopDoing"
+             style="width: 100%;height: 100%">
     </div>
 </template>
 
 <script lang="ts">
-    import {defineComponent, computed, ref, onMounted,onBeforeMount} from "vue";
-    import { useElementProxy, useElementScale, useElementRotate} from '../hooks'
+    import {defineComponent, computed, ref, onMounted, onBeforeMount} from "vue";
+    import {useElementProxy, useElementScale, useElementRotate} from '../hooks'
     import {Assembly} from '../appInterfaces'
     import {getStyleDeg, getStylePx} from "../untils/helper";
 
@@ -31,8 +34,8 @@
                         stickerId: 0,
                         rotate: 0,
                         width: 0,
-                        stickerMoveX: 0,
-                        stickerMoveY: 0,
+                        centerY: 0,
+                        centerX: 0,
                         imageUrl: '',
                         scale: 1,
                         height: 0,
@@ -45,34 +48,31 @@
         },
         setup(props, context) {
             const element = ref<HTMLElement>(null)
-            const selected = ref<boolean>(false)
-            const {x, y, moveX, moveY, stopAndGetData, startListen} = useElementProxy(
-                props.config.stickerMoveX, props.config.stickerMoveY, element
+            const centerX = ref(props.config.centerX)
+            const centerY = ref(props.config.centerY)
+            const {scale, scaleStart, scaleStop} = useElementScale(element)
+            const {moveX, moveY, stopAndGetData, startListen} = useElementProxy(
+                centerX.value, centerY.value, scale, element
             )
-            const {scale, scaleStart,scaleStop} = useElementScale(element)
-            const {deg, startRotate,stopRotate} = useElementRotate(element)
+            const {deg, startRotate, stopRotate} = useElementRotate(element)
+
             const styleWidth = computed<string>(() => getStylePx(props.config.width))
             const styleHeight = computed<string>(() => getStylePx(props.config.height))
             const styleMoveX = computed<string>(() => getStylePx(moveX.value))
             const styleMoveY = computed<string>(() => getStylePx(moveY.value))
             const styleDeg = computed<string>(() => getStyleDeg(deg.value))
-            const stopDoing = () =>{
-                scaleStop()
-                stopRotate()
+            const stopDoing = () => {
+                const data = stopAndGetData()
+                centerX.value = data.centerX
+                centerY.value = data.centerY
             }
-            const dragFn = () => {
-                selected.value ? stopAndGetData() : startListen()
-                selected.value = !selected.value
-            }
-            onMounted(()=>{
-                document.body.addEventListener('mouseup',stopDoing)
-            })
-            onBeforeMount(()=>document.body.removeEventListener('mouseup',stopDoing))
+
+            // onBeforeMount(()=>document.body.removeEventListener('mouseup',stopDoing))
             return {
                 styleMoveX, styleMoveY,
-                dragFn, scaleStart, startRotate,scaleStop,
-                selected, styleWidth, styleHeight,
-                element, props, scale, styleDeg
+                startListen, scaleStart, startRotate, scaleStop, stopAndGetData, stopDoing,
+                styleWidth, styleHeight, stopRotate,
+                element, centerX, centerY, scale, styleDeg
             }
         },
     });
@@ -99,7 +99,8 @@
         bottom: 0px;
         right: 0px;
     }
-    #rotate{
+
+    #rotate {
         background-image: url("../assets/components/rotate-icon.png");
         background-size: cover;
         width: 20px;

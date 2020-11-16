@@ -1,5 +1,5 @@
 <template>
-    <div id="sad" ref="price">
+    <div id="sad" >
     <sticker v-for="item in dataSource.Assemblies"
              :background-offset-x="offsetX"
              :background-offset-y="offsetY"
@@ -17,7 +17,6 @@
             sticker,
         },
         setup(){
-            const price = ref<HTMLElement>(null)
             const offsetX = ref<number>(0)
             const offsetY = ref<number>(0)
             const dataSource = reactive<Journal>({
@@ -29,8 +28,8 @@
                         rotate:0,
                         height:200,
                         width:200,
-                        stickerMoveY:345,
-                        stickerMoveX:234,
+                        centerX:345,
+                        centerY:234,
                         stickerId:0,
                         componentType:1,
                         zIndex:0,
@@ -41,19 +40,18 @@
                         rotate:0,
                         height:200,
                         width:200,
-                        stickerMoveY:35,
-                        stickerMoveX:34,
+                        centerX:35,
+                        centerY:34,
                         stickerId:0,
                         componentType:1,
                         zIndex:0,
                     }]
             })
             onMounted(()=>{
-                offsetX.value = price.value.offsetLeft
-                offsetY.value = price.value.offsetTop===0?document.body.scrollTop:price.value.offsetTop;
-                console.log(price.value.offsetLeft)
+                offsetX.value = 1
+                offsetY.value = 0;
             })
-            return {dataSource,price,offsetX,offsetY}
+            return {dataSource,offsetX,offsetY}
         }
     });
 </script>
