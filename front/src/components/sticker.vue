@@ -50,7 +50,7 @@
             const element = ref<HTMLElement>(null)
             const centerX = ref(props.config.centerX)
             const centerY = ref(props.config.centerY)
-            const {scale, scaleStart, scaleStop} = useElementScale(element)
+            const {scale, scaleStart, scaleStop} = useElementScale(props.config.scale,element)
             const {moveX, moveY, stopAndGetData, startListen} = useElementProxy(
                 centerX.value, centerY.value, scale, element
             )
@@ -67,7 +67,7 @@
                 centerY.value = data.centerY
             }
 
-            // onBeforeMount(()=>document.body.removeEventListener('mouseup',stopDoing))
+            onBeforeMount(()=>console.log(props))
             return {
                 styleMoveX, styleMoveY,
                 startListen, scaleStart, startRotate, scaleStop, stopAndGetData, stopDoing,
