@@ -119,8 +119,8 @@ export function useMouseClick(targetElement: Ref<HTMLElement>) {
     return {centerX, centerY, clickX, clickY, startClick}
 }
 
-export function useElementScale(targetElement: Ref<HTMLElement>) {
-    const scale = ref<number>(1)
+export function useElementScale(initial:number,targetElement: Ref<HTMLElement>) {
+    const scale = ref<number>(initial)
     const oldDistance = ref<number|null>(null)
     const {centerX, centerY, clickX, clickY, startClick} = useMouseClick(targetElement)
     const {x, y, startListen, stopListen} = useMouse(targetElement)
@@ -128,7 +128,7 @@ export function useElementScale(targetElement: Ref<HTMLElement>) {
         startListen();
         startClick(proxyX, proxyY, e)
         if(!oldDistance.value)
-            oldDistance.value = Math.sqrt(Math.pow(clickX.value - centerX.value, 2) + Math.pow(clickY.value - centerY.value, 2))
+            oldDistance.value = Math.sqrt(Math.pow(clickX.value - centerX.value, 2) + Math.pow(clickY.value - centerY.value, 2))/scale.value
     }
     const scaleStop: () => number = () => {
         stopListen();
@@ -138,7 +138,7 @@ export function useElementScale(targetElement: Ref<HTMLElement>) {
         // (x1-x2)^2 + (y1-y2)^2 开根号
         // const oldDistance = Math.sqrt(Math.pow(clickX.value - centerX.value, 2) + Math.pow(clickY.value - centerY.value, 2))
         const newDistance = Math.sqrt(Math.pow(newVal[0] - centerX.value, 2) + Math.pow(newVal[1] - centerY.value, 2))
-        scale.value = oldDistance.value === null||oldDistance.value === 0 ? 1 : newDistance / oldDistance.value
+        scale.value = oldDistance.value === null||oldDistance.value === 0 ? scale.value : newDistance / oldDistance.value
         // console.log(scale.value)
     })
     onBeforeUnmount(() => {

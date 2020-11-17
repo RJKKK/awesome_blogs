@@ -50,7 +50,7 @@
             const element = ref<HTMLElement>(null)
             const centerX = ref(props.config.centerX)
             const centerY = ref(props.config.centerY)
-            const {scale, scaleStart, scaleStop} = useElementScale(element)
+            const {scale, scaleStart, scaleStop} = useElementScale(props.config.scale,element)
             const {moveX, moveY, stopAndGetData, startListen, setProxy} = useElementProxy(
                 centerX.value, centerY.value, scale, element
             )
