@@ -54,7 +54,7 @@
             const {moveX, moveY, stopAndGetData, startListen, setProxy} = useElementProxy(
                 centerX.value, centerY.value, scale, element
             )
-            const {deg, startRotate, stopRotate} = useElementRotate(element)
+            const {deg, startRotate, stopRotate} = useElementRotate(props.config.rotate,element)
 
             const styleWidth = computed<string>(() => getStylePx(props.config.width))
             const styleHeight = computed<string>(() => getStylePx(props.config.height))

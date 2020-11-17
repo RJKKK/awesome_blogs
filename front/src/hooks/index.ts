@@ -147,15 +147,15 @@ export function useElementScale(initial:number,targetElement: Ref<HTMLElement>) 
     return {scale, scaleStart, scaleStop}
 }
 
-export function useElementRotate(targetElement: Ref<HTMLElement>) {
-    const deg = ref<number>(0)
+export function useElementRotate(initial:number,targetElement: Ref<HTMLElement>) {
+    const deg = ref<number>(initial)
     const preAngle = ref<number|null>(null)
     const {centerX, centerY, clickX, clickY, startClick} = useMouseClick(targetElement)
     const {x, y, startListen, stopListen} = useMouse(targetElement)
     const startRotate = (proxyX: number, proxyY: number, e: MouseEvent) => {
         startListen();
         startClick(proxyX, proxyY, e)
-        if(!preAngle.value)preAngle.value = arcTan(centerY.value - clickY.value, clickX.value - centerX.value)
+        if(!preAngle.value)preAngle.value = deg.value + arcTan(centerY.value - clickY.value, clickX.value - centerX.value)
     }
     const stopRotate: () => number = () => {
         stopListen();
@@ -164,7 +164,7 @@ export function useElementRotate(targetElement: Ref<HTMLElement>) {
     const watcher = watch([x, y], (newVal, oldVal) => {
         // const preAngle = arcTan(centerY.value - clickY.value, clickX.value - centerX.value)
         const newAngle = arcTan(centerY.value - newVal[1], newVal[0] - centerX.value)
-        deg.value = newAngle - preAngle.value
+        deg.value =  newAngle - preAngle.value
     })
     onBeforeUnmount(() => {
         watcher()
