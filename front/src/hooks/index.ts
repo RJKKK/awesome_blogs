@@ -155,7 +155,8 @@ export function useElementRotate(initial:number,targetElement: Ref<HTMLElement>)
     const startRotate = (proxyX: number, proxyY: number, e: MouseEvent) => {
         startListen();
         startClick(proxyX, proxyY, e)
-        if(!preAngle.value)preAngle.value = deg.value + arcTan(centerY.value - clickY.value, clickX.value - centerX.value)
+        console.log(deg.value)
+        if(!preAngle.value)preAngle.value = arcTan(centerY.value - clickY.value, clickX.value - centerX.value) - deg.value
     }
     const stopRotate: () => number = () => {
         stopListen();
@@ -164,7 +165,7 @@ export function useElementRotate(initial:number,targetElement: Ref<HTMLElement>)
     const watcher = watch([x, y], (newVal, oldVal) => {
         // const preAngle = arcTan(centerY.value - clickY.value, clickX.value - centerX.value)
         const newAngle = arcTan(centerY.value - newVal[1], newVal[0] - centerX.value)
-        deg.value =  newAngle - preAngle.value
+        deg.value =  !preAngle.value?deg.value :newAngle - preAngle.value
     })
     onBeforeUnmount(() => {
         watcher()

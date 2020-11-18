@@ -13,7 +13,7 @@
         ></div>
         <img id="image" @mousedown.stop.prevent.self="startListen" src="https://api.r10086.com/CG系列1.php" alt="随机图片"
              @mouseup.stop.self="stopMove"
-             style="width: 100%;height: 100%">
+             style="width: 100%;height: 100%;display:block">
     </div>
 </template>
 
