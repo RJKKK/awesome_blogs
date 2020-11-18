@@ -1,9 +1,12 @@
 <template>
-    <div id="sad" >
-    <sticker v-for="(item,index) in state.Assemblies"
-             :background-offset-x="offsetX"
-             :background-offset-y="offsetY"
-             v-model:config="state.Assemblies[index]" :key="index"></sticker>
+    <header></header>
+    <div class="container">
+        <div id="main" >
+            <sticker v-for="(item,index) in state.Assemblies"
+                     :background-offset-x="offsetX"
+                     :background-offset-y="offsetY"
+                     v-model:config="state.Assemblies[index]" :key="index"></sticker>
+        </div>
     </div>
 </template>
 
@@ -72,13 +75,20 @@
     });
 </script>
 
-<style scoped>
-    #sad {
+<style scoped lang="less">
+    header{
+        height: 40px;
+    }
+    .container{
+        width: 100%;
+        padding-bottom: 40px;
+        background-image: url("../assets/backgrounds/bg-contents.gif");
+    }
+    #main {
         width: 700px;
         height: 800px;
-        background: aqua;
-        margin-top: 50px;
-        margin-left: 50px;
+        background: white;
+        margin: 0 auto;
         overflow: hidden;
         position: relative;
     }

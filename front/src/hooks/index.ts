@@ -46,6 +46,11 @@ export function useMouse(element?: Ref<HTMLElement>) {
     onMounted(() => {
         backgroundOffsetX.value = element.value.parentElement.offsetLeft
         backgroundOffsetY.value = element.value.parentElement.offsetTop
+        window.addEventListener('resize',()=>{
+            // console.log( backgroundOffsetX.value,element.value.parentElement.offsetLeft)
+            backgroundOffsetX.value = element.value.parentElement.offsetLeft
+            backgroundOffsetY.value = element.value.parentElement.offsetTop
+        })
     })
     onUnmounted(() => stopListen())
     return {x, y, startListen, stopListen, backgroundOffsetX, backgroundOffsetY}

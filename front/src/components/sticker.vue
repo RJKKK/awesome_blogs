@@ -13,7 +13,7 @@
         ></div>
         <img id="image" @mousedown.stop.prevent.self="startListen" src="https://api.r10086.com/CG系列1.php" alt="随机图片"
              @mouseup.stop.self="stopMove"
-             style="width: 100%;height: 100%;display:block">
+             style="width: 100%;height: 100%;display:block;">
     </div>
 </template>
 
@@ -78,7 +78,6 @@
             }
             watch([() => props.config.centerX, () => props.config.centerY], (newVal) => {
                 if(!(newVal[0]===centerX.value&&newVal[1]===centerY.value)){
-                    console.log(1111)
                     setProxy(newVal[0],newVal[1])
                 }
 
@@ -101,7 +100,6 @@
         height: var(--styleHeight);
         transform: translate(var(--styleMoveX), var(--styleMoveY)) scale(var(--scale)) rotate(var(--styleDeg));
         position: absolute;
-        background: red;
         overflow: hidden;
         user-select: none;
     }
