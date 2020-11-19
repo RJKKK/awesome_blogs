@@ -77,17 +77,19 @@
 
 <style scoped lang="less">
     header{
-        height: 40px;
+        height: 80px;
     }
     .container{
         width: 100%;
         padding-bottom: 40px;
-        background-image: url("../assets/backgrounds/bg-contents.gif");
+        /*background-image: url("../assets/backgrounds/bg-mainvisual-01.gif");*/
+        background-color: #F3EFE4;
     }
     #main {
         width: 700px;
         height: 800px;
-        background: white;
+        background:  url("../assets/backgrounds/bg-mainvisual-01.gif");
+        background-color: white;
         margin: 0 auto;
         overflow: hidden;
         position: relative;
