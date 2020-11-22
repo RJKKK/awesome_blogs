@@ -389,3 +389,8 @@ template {
 [hidden] {
   display: none;
 }
+li,ul,ol,td{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
