@@ -111,15 +111,7 @@
 
 <style scoped lang="less">
     header{
-<<<<<<< Updated upstream
-        height: 80px;
-    }
-    .container{
-        width: 100%;
-        padding-bottom: 40px;
-        /*background-image: url("../assets/backgrounds/bg-mainvisual-01.gif");*/
-        background-color: #F3EFE4;
-=======
+        font-family: 'curcle';
         height: 60px;
         /*position: fixed;*/
         .menu{
@@ -178,9 +170,9 @@
     }
     .container{
         width: 100%;
-        padding-bottom: 60px;
+        /*padding-bottom: 60px;*/
+        min-height: calc(100vh - 60px);
         background-image: url("../assets/backgrounds/bg-contents.gif");
->>>>>>> Stashed changes
     }
     #main {
         width: 700px;
