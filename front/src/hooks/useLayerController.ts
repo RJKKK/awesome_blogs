@@ -18,7 +18,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         undoFinishedStatus: true as boolean,
         redoFinishedStatus: true as boolean
     })
-    const undoStatus = computed<boolean>(() => state.index > 0)
+    const undoStatus = computed<boolean>(() => state.index >0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
     const layersStatus = computed({
         get: () => {
@@ -74,11 +74,13 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         delObjects.forEach(val => canvas.remove(val))
     }
     const updateCanvasState = () => {
+        console.log(state.canvasState)
         if (state.redoFinishedStatus && state.undoFinishedStatus) {
             state.canvasState.push(canvas.toJSON())
             state.index++
+            console.log(state.canvasState,state.index)
         }
-        console.log(layersStatus.value)
+        // console.log(layersStatus.value)
     }
     const undo = () => {
         state.undoFinishedStatus = false
@@ -86,6 +88,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         else canvas.loadFromJSON(state.canvasState[state.index - 1], () => {
             state.index--
             state.undoFinishedStatus = true
+            console.log(layersStatus.value)
         })
     }
     const redo = () => {
@@ -93,7 +96,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         if (!redoStatus.value) return null
         else canvas.loadFromJSON(state.canvasState[state.index + 1], () => {
             state.index++
-            state.undoFinishedStatus = true
+            state.redoFinishedStatus = true
         })
     }
     /**
@@ -119,12 +122,19 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     }, 500)
 
     onMounted(() => {
-        canvas = new fabric.Canvas(element.value)
+        canvas = new fabric.Canvas(element.value,{
+            height:element.value.offsetHeight,
+            width:element.value.offsetWidth
+        })
         if (jsonContent) {
             canvas.loadFromJSON(jsonContent, () => {
                 state.canvasState.push(canvas.toJSON())
                 state.index++
             })
+        }
+        else {
+            state.canvasState.push({})
+            state.index++
         }
         document.addEventListener('keydown', keyCodeForEvent)
     })
