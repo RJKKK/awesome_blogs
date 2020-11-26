@@ -1,10 +1,10 @@
 import * as fabricjs from 'fabric'
-import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed} from 'vue'
+import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed,watch} from 'vue'
 import {Object, Image} from "fabric/fabric-impl";
 import * as ShortcutsJs from 'shortcuts';
 import * as lodashjs from "lodash"
 // @ts-ignore
-const Shortcuts = ShortcutsJs.default.Shortcuts
+const Shortcuts = ShortcutsJs.default.Shortcuts;
 // @ts-ignore
 const fabric = fabricjs.default.fabric;
 // @ts-ignore
@@ -20,14 +20,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     })
     const undoStatus = computed<boolean>(() => state.index >0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    const layersStatus = computed({
-        get: () => {
-            // @ts-ignore
-            return state.index>0?state.canvasState[state.index].objects:[]
-        }, set: () => {
-
-        }
-    })
+    const layersStatus = ref<Object[]>([])
     const clipboard = ref<Object[]>([])
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -61,6 +54,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
                 clone.set({
                     left: clone.left + 20,
                     top: clone.top + 20,
+                    backgroundColor:"red",
                     evented: true
                 } as Partial<Object>)
                 canvas.add(clone)
@@ -68,37 +62,51 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
                 canvas.setActiveObject(clone)
             })
         })
+
     }
     const del = () => {
         const delObjects: Object[] = canvas.getActiveObjects()
         delObjects.forEach(val => canvas.remove(val))
     }
     const updateCanvasState = () => {
+        // console.log(layersStatus.value)
         if (state.redoFinishedStatus && state.undoFinishedStatus) {
             state.canvasState = state.canvasState.slice(0, state.index+1)
             state.canvasState.push(canvas.toJSON())
             state.index++
         }
-        console.log(state.index)
     }
     const undo = () => {
-        state.undoFinishedStatus = false
         if (!undoStatus.value) return null;
-        else canvas.loadFromJSON(state.canvasState[state.index - 1], () => {
-            state.index--
-            state.undoFinishedStatus = true
-            console.log(layersStatus.value)
-        })
+        else {
+            state.undoFinishedStatus = false
+            canvas.loadFromJSON(state.canvasState[state.index - 1], () => {
+                state.index--
+                state.undoFinishedStatus = true
+            })
+        }
     }
     const redo = () => {
-        state.redoFinishedStatus = false
         if (!redoStatus.value) return null
-        else canvas.loadFromJSON(state.canvasState[state.index + 1], () => {
-            state.index++
-            state.redoFinishedStatus = true
-        })
+        else {
+            state.redoFinishedStatus = false
+            canvas.loadFromJSON(state.canvasState[state.index + 1], () => {
+                state.index++
+                state.redoFinishedStatus = true
+                // console.log(canvas.getObjects())
+            })
+        }
     }
-
+    const getOne = (index: number)=>{
+       let obj = canvas.item(index)
+        // @ts-ignore
+        canvas.setActiveObject(obj)
+        return obj as unknown as Object
+    }
+    const watcher = watch(state,()=>{
+        layersStatus.value = canvas._objects
+        console.log(layersStatus.value)
+    })
     onMounted(() => {
         canvas = new fabric.Canvas(element.value,{
             height:element.value.offsetHeight,
@@ -157,6 +165,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         })
     })
     return {
-        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state
+        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state,getOne
     }
 }

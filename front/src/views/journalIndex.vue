@@ -59,6 +59,7 @@
             })
             nextTick(()=>{
                 controller.addText('Fire the hot!')
+                controller.getOne(0)
             })
             return {state,element}
         }
