@@ -1,15 +1,15 @@
 import * as fabricjs from 'fabric'
 import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed} from 'vue'
 import {Object, Image} from "fabric/fabric-impl";
-
-import * as lodashjs from 'lodash'
-import platform from 'platform'
+import * as ShortcutsJs from 'shortcuts';
+import * as lodashjs from "lodash"
+// @ts-ignore
+const Shortcuts = ShortcutsJs.default.Shortcuts
 // @ts-ignore
 const fabric = fabricjs.default.fabric;
 // @ts-ignore
 const lodash = lodashjs.default
-const isMac = !!~platform.ua.indexOf('Mac')
-
+const shortcuts = new Shortcuts ({target:document,capture:false});
 export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Object) {
     let canvas: fabric.Canvas = null
     const state = reactive({
@@ -74,13 +74,12 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         delObjects.forEach(val => canvas.remove(val))
     }
     const updateCanvasState = () => {
-        console.log(state.canvasState)
         if (state.redoFinishedStatus && state.undoFinishedStatus) {
+            state.canvasState = state.canvasState.slice(0, state.index+1)
             state.canvasState.push(canvas.toJSON())
             state.index++
-            console.log(state.canvasState,state.index)
         }
-        // console.log(layersStatus.value)
+        console.log(state.index)
     }
     const undo = () => {
         state.undoFinishedStatus = false
@@ -99,27 +98,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             state.redoFinishedStatus = true
         })
     }
-    /**
-     * 这是控制键盘的方法，支持Ctrl + X,Ctrl + Z,Ctrl + V。
-     * this is the function to control keyboard.
-     * support Ctrl + X,Ctrl + Z,Ctrl + V
-     * */
-    const keyCodeForEvent = lodash.debounce((e: KeyboardEvent) => {
-        console.log(e.metaKey)
-        const trueCtrl = isMac ? e.metaKey : e.ctrlKey
-        if (!!~["C", 'c'].indexOf(e.key) && trueCtrl) {
-            setClipboard()
-            e.preventDefault()
-        }
-        if (!!~["V", 'v'].indexOf(e.key) && trueCtrl) {
-            paste();
-            e.preventDefault()
-        }
-        if (!!~["Z", 'z'].indexOf(e.key) && trueCtrl) {
-            undo();
-            e.preventDefault()
-        }
-    }, 500)
 
     onMounted(() => {
         canvas = new fabric.Canvas(element.value,{
@@ -136,10 +114,36 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             state.canvasState.push({})
             state.index++
         }
-        document.addEventListener('keydown', keyCodeForEvent)
+        (()=>{
+            shortcuts.add({
+                handler:()=>{
+                    paste();
+                    return false
+                },shortcut:"CmdOrCtrl+V"
+            })
+            shortcuts.add({
+                handler:()=>{
+                    setClipboard();
+                    return false
+                },shortcut:"CmdOrCtrl+C"
+            })
+            shortcuts.add({
+                handler:()=>{
+                    undo()
+                    return false
+                },shortcut:"CmdOrCtrl+Z"
+            })
+            shortcuts.add({
+                handler:()=>{
+                    redo()
+                    return false
+                },shortcut:"CmdOrCtrl+Shift+Z"
+            })
+        })();
     })
     onUnmounted(() => {
-        document.removeEventListener('keyup', keyCodeForEvent)
+        // document.removeEventListener('keyup', keyCodeForEvent)
+        shortcuts.reset()
     })
     nextTick(() => {
         canvas.on('object:modified', () => {
