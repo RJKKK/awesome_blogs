@@ -42,10 +42,11 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         canvas.requestRenderAll()
     }
     const setClipboard = () => {
-        const copyObjects: Object[] = canvas.getActiveObjects()
-        clipboard.value = copyObjects.map(val => {
-            return lodash.cloneDeep(val) as Object
-        })
+        // const copyObjects: Object[] = canvas.getActiveObjects()
+        // clipboard.value = copyObjects.map(val => {
+        //     return lodash.cloneDeep(val) as Object
+        // })
+        clipboard.value = canvas.getActiveObjects()
     }
     const paste = () => {
         canvas.discardActiveObject()
@@ -54,9 +55,9 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
                 clone.set({
                     left: clone.left + 20,
                     top: clone.top + 20,
-                    backgroundColor:"red",
                     evented: true
                 } as Partial<Object>)
+                // console.log(clone.isType('image'))
                 canvas.add(clone)
                 clipboard.value[index] = clone
                 canvas.setActiveObject(clone)
@@ -151,6 +152,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     })
     onUnmounted(() => {
         // document.removeEventListener('keyup', keyCodeForEvent)
+        watcher()
         shortcuts.reset()
     })
     nextTick(() => {
@@ -165,6 +167,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         })
     })
     return {
-        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state,getOne
+        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state,getOne,layersStatus
     }
 }

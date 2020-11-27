@@ -37,8 +37,8 @@
         <div id="main">
             <canvas ref="element" style="width: 100%;height: 100%"></canvas>
         </div>
-
     </div>
+    <div v-for="(item,index) in controller.layersStatus.value" :key="index" >{{item}}</div>
 </template>
 
 <script lang="ts">
@@ -50,18 +50,18 @@
 
         setup(){
             const element = ref<HTMLElement>(null)
-            const state = reactive({
-
-            })
             const controller = useLayerController(element)
             onBeforeMount(()=>{
 
             })
             nextTick(()=>{
                 controller.addText('Fire the hot!')
-                controller.getOne(0)
+                controller.addImage('https://api.r10086.com/CG系列1.php')
+                // window.setInterval(()=>{
+                //     console.log(controller.layersStatus.value)
+                // },1000)
             })
-            return {state,element}
+            return {element,controller}
         }
     });
 </script>
