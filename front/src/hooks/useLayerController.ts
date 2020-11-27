@@ -20,7 +20,10 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     })
     const undoStatus = computed<boolean>(() => state.index >0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    const layersStatus = ref<Object[]>([])
+    const layersStatus = computed<Object[]>(()=>{
+        state.index
+        return canvas?canvas._objects:[]
+    })
     const clipboard = ref<Object[]>([])
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -73,7 +76,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         // console.log(layersStatus.value)
         if (state.redoFinishedStatus && state.undoFinishedStatus) {
             state.canvasState = state.canvasState.slice(0, state.index+1)
-            state.canvasState.push(canvas.toJSON())
+            state.canvasState.push(canvas.toDatalessJSON())
             state.index++
         }
     }
@@ -104,10 +107,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         canvas.setActiveObject(obj)
         return obj as unknown as Object
     }
-    const watcher = watch(state,()=>{
-        layersStatus.value = canvas._objects
-        console.log(layersStatus.value)
-    })
+
     onMounted(() => {
         canvas = new fabric.Canvas(element.value,{
             height:element.value.offsetHeight,
@@ -115,7 +115,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         })
         if (jsonContent) {
             canvas.loadFromJSON(jsonContent, () => {
-                state.canvasState.push(canvas.toJSON())
+                state.canvasState.push(canvas.toDatalessJSON())
                 state.index++
             })
         }
@@ -148,24 +148,22 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
                     return false
                 },shortcut:"CmdOrCtrl+Shift+Z"
             })
+            canvas.on('object:modified', () => {
+                updateCanvasState()
+            })
+            canvas.on('object:added', () => {
+                updateCanvasState()
+            })
+            canvas.on('object:removed', () => {
+                updateCanvasState()
+            })
         })();
     })
     onUnmounted(() => {
         // document.removeEventListener('keyup', keyCodeForEvent)
-        watcher()
         shortcuts.reset()
     })
-    nextTick(() => {
-        canvas.on('object:modified', () => {
-            updateCanvasState()
-        })
-        canvas.on('object:added', () => {
-            updateCanvasState()
-        })
-        canvas.on('object:removed', () => {
-            updateCanvasState()
-        })
-    })
+
     return {
         addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state,getOne,layersStatus
     }

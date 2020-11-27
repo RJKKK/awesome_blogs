@@ -38,11 +38,11 @@
             <canvas ref="element" style="width: 100%;height: 100%"></canvas>
         </div>
     </div>
-    <div v-for="(item,index) in controller.layersStatus.value" :key="index" >{{item}}</div>
+    <div v-for="(item,index) in layersStatus" :key="index" >{{item.cacheKey?item.cacheKey:item.text}}</div>
 </template>
 
 <script lang="ts">
-    import {defineComponent,ref,reactive,onMounted,onBeforeMount,nextTick} from "vue";
+    import {defineComponent,ref,reactive,onMounted,onBeforeMount,nextTick,watch} from "vue";
     import {useLayerController} from "../hooks/useLayerController"
 
 
@@ -50,18 +50,19 @@
 
         setup(){
             const element = ref<HTMLElement>(null)
-            const controller = useLayerController(element)
+            const {addText,addImage,layersStatus} = useLayerController(element)
             onBeforeMount(()=>{
 
             })
-            nextTick(()=>{
-                controller.addText('Fire the hot!')
-                controller.addImage('https://api.r10086.com/CG系列1.php')
+            onMounted(()=>{
+                addText('Fire the hot!')
+                addImage('https://api.r10086.com/CG系列1.php')
                 // window.setInterval(()=>{
                 //     console.log(controller.layersStatus.value)
                 // },1000)
             })
-            return {element,controller}
+
+            return {element,layersStatus}
         }
     });
 </script>
