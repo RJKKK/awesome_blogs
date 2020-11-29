@@ -1,6 +1,6 @@
 import * as fabricjs from 'fabric'
 import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed,watch} from 'vue'
-import {Object, Image} from "fabric/fabric-impl";
+import {Object, Image, IEvent} from "fabric/fabric-impl";
 import * as ShortcutsJs from 'shortcuts';
 import * as lodashjs from "lodash"
 // @ts-ignore
@@ -18,6 +18,58 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         undoFinishedStatus: true as boolean,
         redoFinishedStatus: true as boolean
     })
+    const _state = reactive({
+        current:null as Object,
+        list:[] as Object[],
+        state:[] as string[],
+        index:0 as number,
+        _index: 0 as number,
+        action:false as boolean,
+        reflash:false as boolean
+    })
+    const _undo = ()=>{
+        console.log(_state)
+        if(_state.index<=0)return _state.index = 0
+        if(_state.reflash){
+            _state.index--;
+            _state.reflash = false;
+        }
+        _state._index = _state.index - 1
+        _state.current = _state.list[_state._index];
+        _state.current.setOptions(JSON.parse(_state.state[_state._index]));
+        _state.index--;
+        _state.current.setCoords()
+        console.log(_state.current)
+        canvas.renderAll()
+        _state.action = true
+    }
+    const _redo = ()=>{
+        console.log(_state)
+        _state.action = true
+        if(_state.index>=_state.state.length - 1)return null;
+        _state._index = _state.index+1;
+        _state.current = _state.list[_state._index];
+        _state.current.setOptions(JSON.parse(_state.state[_state._index]))
+        _state.index++;
+        _state.current.setCoords();
+        canvas.renderAll();
+    }
+    const _updateCanvasState = (e:IEvent)=>{
+        let obj = e.target
+        if(_state.action){
+            _state.state = [_state.state[_state._index]]
+            _state.list = [_state.list[_state._index]]
+            _state.action = false
+            _state.index = 1;
+        }
+        // obj.saveState()
+        _state.state[_state.index] = JSON.stringify( obj.saveState())
+        _state.list[_state.index] = obj
+        _state.index++;
+        _state._index = _state.index - 1
+        _state.reflash = true
+        console.log(_state.list)
+    }
     const undoStatus = computed<boolean>(() => state.index >0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
     const layersStatus = computed<Object[]>(()=>{
@@ -138,24 +190,36 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             })
             shortcuts.add({
                 handler:()=>{
-                    undo()
+                    // undo()
+                    _undo();
                     return false
                 },shortcut:"CmdOrCtrl+Z"
             })
             shortcuts.add({
                 handler:()=>{
-                    redo()
+                    // redo()
+                    _redo();
                     return false
                 },shortcut:"CmdOrCtrl+Shift+Z"
             })
-            canvas.on('object:modified', () => {
-                updateCanvasState()
+            // canvas.on('object:modified', () => {
+            //     updateCanvasState()
+            // })
+            // canvas.on('object:added', (e) => {
+            //     console.log(e.target)
+            //     updateCanvasState()
+            // })
+            // canvas.on('object:removed', () => {
+            //     updateCanvasState()
+            // })
+            canvas.on('object:added',(e)=>{
+                _updateCanvasState(e)
             })
-            canvas.on('object:added', () => {
-                updateCanvasState()
+            canvas.on('object:modified',(e)=>{
+                _updateCanvasState(e)
             })
-            canvas.on('object:removed', () => {
-                updateCanvasState()
+            canvas.on('object:removed', (e) => {
+                _updateCanvasState(e)
             })
         })();
     })
