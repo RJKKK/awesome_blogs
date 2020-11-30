@@ -3,7 +3,7 @@
         <div id="layerController">
             <h1>
 <!--                <span class="kind">种类 </span>-->
-                <span class="title">这是手帐标题</spa n>
+                <span class="title">这是手帐标题</span>
             </h1>
             <h5>[ 作 者 ] 勿 忘 我</h5>
             <div class="tip">修改作品信息</div>
@@ -88,7 +88,7 @@
             })
             onMounted(() => {
                 addText('Fire the hot!')
-                addImage('https://api.r10086.com/CG系列1.php')
+                // addImage('https://api.r10086.com/CG系列1.php')
                 window.setTimeout(() => {
                     console.log(layersStatus.value)
                 }, 5000)

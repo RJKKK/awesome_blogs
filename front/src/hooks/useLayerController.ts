@@ -1,5 +1,5 @@
 import * as fabricjs from 'fabric'
-import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed,watch} from 'vue'
+import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, watch} from 'vue'
 import {Object, Image, IEvent} from "fabric/fabric-impl";
 import * as ShortcutsJs from 'shortcuts';
 import * as lodashjs from "lodash"
@@ -7,9 +7,11 @@ import * as lodashjs from "lodash"
 const Shortcuts = ShortcutsJs.default.Shortcuts;
 // @ts-ignore
 const fabric = fabricjs.default.fabric;
+import '../untils/fabricjs'
 // @ts-ignore
 const lodash = lodashjs.default
-const shortcuts = new Shortcuts ({target:document,capture:false});
+const shortcuts = new Shortcuts({target: document, capture: false});
+
 export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Object) {
     let canvas: fabric.Canvas = null
     const state = reactive({
@@ -19,64 +21,67 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         redoFinishedStatus: true as boolean
     })
     const _state = reactive({
-        current:null as Object,
-        list:[] as Object[],
-        state:[] as string[],
-        index:0 as number,
+        current: null as Object,
+        list: [] as Object[],
+        state: [] as string[],
+        index: 0 as number,
         _index: 0 as number,
-        action:false as boolean,
-        reflash:false as boolean
+        action: false as boolean,
+        reflash: false as boolean
     })
-    const _undo = ()=>{
-        console.log(_state)
-        if(_state.index<=0)return _state.index = 0
-        if(_state.reflash){
+    const _undo = () => {
+        // console.log(_state)
+        if (_state.index <= 0) return _state.index = 0
+        if (_state.reflash) {
             _state.index--;
             _state.reflash = false;
         }
-        _state._index = _state.index - 1
+        _state._index = _state.index - 1;
         _state.current = _state.list[_state._index];
+        // console.log(JSON.parse(_state.state[_state._index]))
         _state.current.setOptions(JSON.parse(_state.state[_state._index]));
         _state.index--;
         _state.current.setCoords()
-        console.log(_state.current)
+        // console.log(_state.current)
         canvas.renderAll()
         _state.action = true
     }
-    const _redo = ()=>{
+    const _redo = () => {
         console.log(_state)
         _state.action = true
-        if(_state.index>=_state.state.length - 1)return null;
-        _state._index = _state.index+1;
+        if (_state.index >= _state.state.length - 1) return null;
+        _state._index = _state.index + 1;
         _state.current = _state.list[_state._index];
         _state.current.setOptions(JSON.parse(_state.state[_state._index]))
         _state.index++;
         _state.current.setCoords();
         canvas.renderAll();
     }
-    const _updateCanvasState = (e:IEvent)=>{
+    const _updateCanvasState = (e: IEvent) => {
         let obj = e.target
-        if(_state.action){
+        // console.log(obj)
+        if (_state.action) {
             _state.state = [_state.state[_state._index]]
             _state.list = [_state.list[_state._index]]
             _state.action = false
             _state.index = 1;
         }
         // obj.saveState()
-        _state.state[_state.index] = JSON.stringify( obj.saveState())
+        // console.log(JSON.stringify( obj.saveState()))
+        _state.state[_state.index] = JSON.stringify(obj.saveState())
         _state.list[_state.index] = obj
         _state.index++;
         _state._index = _state.index - 1
         _state.reflash = true
-        console.log(_state.list)
+        // console.log(_state.list)
     }
-    const undoStatus = computed<boolean>(() => state.index >0)
+    const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    const layersStatus = computed<Object[]>(()=>{
+    const layersStatus = computed<Object[]>(() => {
         state.index
-        return canvas?canvas._objects:[]
+        return canvas ? canvas._objects : []
     })
-    const clipboard = ref<Object[]>([])
+    let clipboard:Object = null
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
         canvas.add(newText)
@@ -101,23 +106,51 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         // clipboard.value = copyObjects.map(val => {
         //     return lodash.cloneDeep(val) as Object
         // })
-        clipboard.value = canvas.getActiveObjects()
+        // console.log(canvas.getActiveObject())
+        canvas.getActiveObject().clone(clone=>{
+            clipboard = clone
+        })
     }
     const paste = () => {
-        canvas.discardActiveObject()
-        clipboard.value.forEach((val, index) => {
-            val.clone(clone => {
-                clone.set({
-                    left: clone.left + 20,
-                    top: clone.top + 20,
-                    evented: true
-                } as Partial<Object>)
-                // console.log(clone.isType('image'))
-                canvas.add(clone)
-                clipboard.value[index] = clone
-                canvas.setActiveObject(clone)
-            })
+        // canvas.discardActiveObject()
+        // console.log(canvas._activeObject)
+
+        clipboard.clone((clone) => {
+            canvas.discardActiveObject()
+            clone.set({
+                left: clone.left + 20,
+                top: clone.top + 20,
+                evented: true
+            } as Object)
+            if (clone.type === 'activeSelection') {
+                // active selection needs a reference to the canvas.
+                clone.canvas = canvas;
+                clone.forEachObject(function(obj) {
+                    canvas.add(obj);
+                });
+                // this should solve the unselectability
+                clone.setCoords();
+            } else {
+                canvas.add(clone);
+            }
+            clipboard.top += 10;
+            clipboard.left += 10;
+            canvas.setActiveObject(clone);
+            canvas.requestRenderAll();
         })
+        // clipboard.value.forEach((val, index) => {
+        //     val.clone(clone => {
+        //         clone.set({
+        //             left: clone.left + 20,
+        //             top: clone.top + 20,
+        //             evented: true
+        //         } as Partial<Object>)
+        //         // console.log(clone.isType('image'))
+        //         canvas.add(clone)
+        //         clipboard.value[index] = clone
+        //         canvas.setActiveObject(clone)
+        //     })
+        // })
 
     }
     const del = () => {
@@ -127,7 +160,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     const updateCanvasState = () => {
         // console.log(layersStatus.value)
         if (state.redoFinishedStatus && state.undoFinishedStatus) {
-            state.canvasState = state.canvasState.slice(0, state.index+1)
+            state.canvasState = state.canvasState.slice(0, state.index + 1)
             state.canvasState.push(canvas.toDatalessJSON())
             state.index++
         }
@@ -153,54 +186,53 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             })
         }
     }
-    const getOne = (index: number)=>{
-       let obj = canvas.item(index)
+    const getOne = (index: number) => {
+        let obj = canvas.item(index)
         // @ts-ignore
         canvas.setActiveObject(obj)
         return obj as unknown as Object
     }
 
     onMounted(() => {
-        canvas = new fabric.Canvas(element.value,{
-            height:element.value.offsetHeight,
-            width:element.value.offsetWidth
+        canvas = new fabric.Canvas(element.value, {
+            height: element.value.offsetHeight,
+            width: element.value.offsetWidth
         })
         if (jsonContent) {
             canvas.loadFromJSON(jsonContent, () => {
                 state.canvasState.push(canvas.toDatalessJSON())
                 state.index++
             })
-        }
-        else {
+        } else {
             state.canvasState.push({})
             state.index++
         }
-        (()=>{
+        (() => {
             shortcuts.add({
-                handler:()=>{
+                handler: () => {
                     paste();
                     return false
-                },shortcut:"CmdOrCtrl+V"
+                }, shortcut: "CmdOrCtrl+V"
             })
             shortcuts.add({
-                handler:()=>{
+                handler: () => {
                     setClipboard();
                     return false
-                },shortcut:"CmdOrCtrl+C"
+                }, shortcut: "CmdOrCtrl+C"
             })
             shortcuts.add({
-                handler:()=>{
+                handler: () => {
                     // undo()
-                    _undo();
+                    canvas.undo();
                     return false
-                },shortcut:"CmdOrCtrl+Z"
+                }, shortcut: "CmdOrCtrl+Z"
             })
             shortcuts.add({
-                handler:()=>{
+                handler: () => {
                     // redo()
-                    _redo();
+                    canvas.redo();
                     return false
-                },shortcut:"CmdOrCtrl+Shift+Z"
+                }, shortcut: "CmdOrCtrl+Shift+Z"
             })
             // canvas.on('object:modified', () => {
             //     updateCanvasState()
@@ -212,15 +244,16 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             // canvas.on('object:removed', () => {
             //     updateCanvasState()
             // })
-            canvas.on('object:added',(e)=>{
-                _updateCanvasState(e)
-            })
-            canvas.on('object:modified',(e)=>{
-                _updateCanvasState(e)
-            })
-            canvas.on('object:removed', (e) => {
-                _updateCanvasState(e)
-            })
+            // canvas.on('object:added', (e) => {
+            //     console.log(e.target)
+            //     _updateCanvasState(e)
+            // })
+            // canvas.on('object:modified', (e) => {
+            //     _updateCanvasState(e)
+            // })
+            // canvas.on('object:removed', (e) => {
+            //     _updateCanvasState(e)
+            // })
         })();
     })
     onUnmounted(() => {
@@ -229,6 +262,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     })
 
     return {
-        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state,getOne,layersStatus
+        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state, getOne, layersStatus
     }
 }
