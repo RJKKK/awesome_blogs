@@ -10,6 +10,8 @@
             <div id="layers" >
                 <div class="test" :style="`background:${colorLibrary[0]}`" :key="index">
                     <span>缩放</span>
+                    <span class="setParams">X: <a-input type="number" v-model="layerParams.scaleX"/></span>
+                    <span class="setParams">Y: <a-input v-model="layerParams.scaleY"/></span>
                 </div>
                 <div class="test" :style="`background:${colorLibrary[1]}`" :key="index">
                     <span>旋转</span>
@@ -85,6 +87,10 @@
         setup() {
             const element = ref<HTMLElement>(null)
             const {addText, addImage, layersStatus} = useLayerController(element)
+            const layerParams = reactive<object>({
+                scaleX:1,
+                scaleY:1
+            });
             const colorLibrary = ref<string[]>([
                 'rgb(164,227,213)',
                 'rgb(172,205,232)',
@@ -110,7 +116,7 @@
             //     }, 5000)
             })
 
-            return {element, layersStatus, colorLibrary}
+            return {element, layersStatus, colorLibrary,layerParams}
         }
     });
 </script>
@@ -247,6 +253,25 @@
             transition: padding-left .3s ease-in-out;
             &:hover {
                 padding-left: 2.5rem;
+            }
+            .setParams{
+                display: flow;
+                float: right;
+                margin-right: 10px;
+                >input{
+                    width: 30px;
+                    border:none;
+                    outline:medium;
+                    padding: 0px;
+                    height: 50%;
+                    color: #a1a3a9;
+                    text-align: center;
+                    &:focus{
+                        outline:0px;
+                        border:none;
+                        box-shadow: none;
+                    }
+                }
             }
         }
         /*.test:nth-child(1){*/
