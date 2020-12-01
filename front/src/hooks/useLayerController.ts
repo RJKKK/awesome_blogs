@@ -222,28 +222,28 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             })
             shortcuts.add({
                 handler: () => {
-                    // undo()
-                    canvas.undo();
+                    undo()
+                    // canvas.undo();
                     return false
                 }, shortcut: "CmdOrCtrl+Z"
             })
             shortcuts.add({
                 handler: () => {
-                    // redo()
-                    canvas.redo();
+                    redo()
+                    // canvas.redo();
                     return false
                 }, shortcut: "CmdOrCtrl+Shift+Z"
             })
-            // canvas.on('object:modified', () => {
-            //     updateCanvasState()
-            // })
-            // canvas.on('object:added', (e) => {
-            //     console.log(e.target)
-            //     updateCanvasState()
-            // })
-            // canvas.on('object:removed', () => {
-            //     updateCanvasState()
-            // })
+            canvas.on('object:modified', () => {
+                updateCanvasState()
+            })
+            canvas.on('object:added', (e) => {
+                console.log(e.target)
+                updateCanvasState()
+            })
+            canvas.on('object:removed', () => {
+                updateCanvasState()
+            })
             // canvas.on('object:added', (e) => {
             //     console.log(e.target)
             //     _updateCanvasState(e)

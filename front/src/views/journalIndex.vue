@@ -5,19 +5,35 @@
 <!--                <span class="kind">种类 </span>-->
                 <span class="title">这是手帐标题</span>
             </h1>
-            <h5>[ 作 者 ] 勿 忘 我</h5>
+            <h5>{{'[ 作 者 ] 勿 忘 我'}}</h5>
             <div class="tip">修改作品信息</div>
             <div id="layers" >
-                <div class="test" :style="`background:${colorLibrary[index%colorLibrary.length]}`"
-                     v-for="(item,index) in layersStatus" :key="index">
-                    <span>{{item.cacheKey?item.cacheKey:item.text}}</span>
-                    <span style="margin-right: 0">隐藏</span>
+                <div class="test" :style="`background:${colorLibrary[0]}`" :key="index">
+                    <span>缩放</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[1]}`" :key="index">
+                    <span>旋转</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[2]}`" :key="index">
+                    <span>位置</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[3]}`" :key="index">
+                    <span>背景颜色</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[4]}`" :key="index">
+                    <span>字体颜色</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[5]}`" :key="index">
+                    <span>描边</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[6]}`" :key="index">
+                    <span></span>
                 </div>
             </div>
 
         </div>
         <header>
-<!--            <label for="toggler">开关</label>-->
+            <label for="toggler" class="switch">开关</label>
             <input type="checkbox" id="toggler" style="display: none">
             <div class="menu">
                 <div class="selector">
@@ -88,10 +104,10 @@
             })
             onMounted(() => {
                 addText('Fire the hot!')
-                // addImage('https://api.r10086.com/CG系列1.php')
-                window.setTimeout(() => {
-                    console.log(layersStatus.value)
-                }, 5000)
+                addImage('https://api.r10086.com/CG系列1.php')
+            //     window.setTimeout(() => {
+            //         console.log(layersStatus)
+            //     }, 5000)
             })
 
             return {element, layersStatus, colorLibrary}
@@ -108,12 +124,17 @@
         background-color: #a1a3a9;
         border-radius: 30px;
     }
+    .switch{
+        display: inline-block;
+        margin-left: 800px  ;
+    }
 
     #background {
         font-family: 'curcle';
         --control-width: 378px;
         background-image: url("../assets/backgrounds/bg_in_a.jpg");
-        background-repeat: repeat;
+        background-size: cover;
+        background-repeat: no-repeat;
         position: relative;
 
 
@@ -149,7 +170,7 @@
         position: absolute;
         width: var(--control-width);
         min-height: 100vh;
-
+        box-shadow: rgba(0, 0, 0, 0.29) 1px 1px 10px 0px;
         background: rgba(255, 255, 255, .3);
 
 

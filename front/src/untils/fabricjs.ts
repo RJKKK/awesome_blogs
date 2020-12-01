@@ -1,12 +1,7 @@
 /**
  * Override the initialize function for the _historyInit();
  */
-declare namespace fabric {
-    class Canvas {
-        redo: () => void
-        undo: () => void
-    }
-}
+
 fabric.Canvas.prototype.initialize = (function(originalFn) {
     return function(...args) {
         originalFn.call(this, ...args);
