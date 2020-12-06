@@ -8,27 +8,31 @@
             <h5>{{'[ 作 者 ] 勿 忘 我'}}</h5>
             <div class="tip">修改作品信息</div>
             <div id="layers" >
-                <div class="test" :style="`background:${colorLibrary[0]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[0]}`" >
                     <span>缩放</span>
-                    <span class="setParams">X: <a-input type="number" v-model="layerParams.scaleX"/></span>
-                    <span class="setParams">Y: <a-input v-model="layerParams.scaleY"/></span>
+                    <span class="setParams">X缩放: <a-input type="number" v-model:value="scaleX"/></span>
+                    <span class="setParams">Y缩放: <a-input v-model:value="scaleY"/></span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[1]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[1]}`" >
                     <span>旋转</span>
+                    <span class="setParams">deg: <a-input v-model:value="rotate"/></span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[2]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[2]}`" >
                     <span>位置</span>
+                    <span class="setParams">X坐标: <a-input type="number" v-model:value="positonX"/></span>
+                    <span class="setParams">Y坐标: <a-input v-model:value="positionY"/></span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[3]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[3]}`" >
                     <span>背景颜色</span>
+                    <span class="setParams">颜色值: <a-input type="color" style="height: 20px;border: 0; outline:none"/></span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[4]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[4]}`" >
                     <span>字体颜色</span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[5]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[5]}`" >
                     <span>描边</span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[6]}`" :key="index">
+                <div class="test" :style="`background:${colorLibrary[6]}`" >
                     <span></span>
                 </div>
             </div>
@@ -78,7 +82,7 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref, reactive, onMounted, onBeforeMount, nextTick, watch} from "vue";
+    import {defineComponent, ref, reactive, onMounted, onBeforeMount, nextTick, watch,toRefs} from "vue";
     import {useLayerController} from "../hooks/useLayerController"
 
 
@@ -89,7 +93,10 @@
             const {addText, addImage, layersStatus} = useLayerController(element)
             const layerParams = reactive<object>({
                 scaleX:1,
-                scaleY:1
+                scaleY:1,
+                rotate:0,
+                positionX:0,
+                positionY:0
             });
             const colorLibrary = ref<string[]>([
                 'rgb(164,227,213)',
@@ -116,7 +123,7 @@
             //     }, 5000)
             })
 
-            return {element, layersStatus, colorLibrary,layerParams}
+            return {element, layersStatus, colorLibrary,...toRefs(layerParams)}
         }
     });
 </script>
@@ -130,6 +137,8 @@
         background-color: #a1a3a9;
         border-radius: 30px;
     }
+    ::-webkit-color-swatch-wrapper{background-color:#ffffff;}
+    ::-webkit-color-swatch{position: relative;}
     .switch{
         display: inline-block;
         margin-left: 800px  ;

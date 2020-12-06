@@ -26,7 +26,7 @@ export default defineComponent({
   background-image: url("../assets/components/bg-index.png");
   min-width: 320px;
   width: 100%;
-  /*height: 100vh;*/
+  min-height: 100vh;
 }
 .content {
   max-width: 720px;
@@ -58,7 +58,7 @@ export default defineComponent({
   }
   .footer {
     /*position: absolute;*/
-    margin-top: -60px;
+    /*margin-top: 60px;*/
     /*margin: 0 auto;*/
     bottom: 0px;
   }
