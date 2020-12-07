@@ -5,7 +5,7 @@
 <!--                <span class="kind">种类 </span>-->
                 <span class="title">这是手帐标题</span>
             </h1>
-            <h5>{{'[ 作 者 ] 勿 忘 我'}}</h5>
+            <h5>{{'[ 作 者 ] 无 名 氏'}}</h5>
             <div class="tip">修改作品信息</div>
             <div id="layers" >
                 <div class="test" :style="`background:${colorLibrary[0]}`" >
@@ -162,20 +162,20 @@
     #background {
         font-family: 'curcle';
         --control-width: 378px;
-        background-image: url("../assets/backgrounds/bg_in_a.jpg");
-        background-size: cover;
+        background-image: url("../assets/backgrounds/bg (1).jpg");
+        /*background-size: cover;*/
+        background-position: top center;
         background-repeat: no-repeat;
         position: relative;
-
 
     }
     #layers{
         margin-top: 30px;
-        overflow-y: scroll;
+        /*overflow-y: scroll;*/
         /*background: hska(0,0%,100%,.3);*/
         height: 420px;
         position: relative;
-        padding-left: 14px;
+        /*padding-left: 14px;*/
         transform: skewY(-9deg);
 
         &:before{
@@ -185,7 +185,7 @@
             top:0;
             left: 0;
             right: 0;
-            padding-left: 14px;
+            /*padding-left: 14px;*/
             height: 100%;
             width: 100%;
             /*z-index: 2;*/
@@ -200,8 +200,8 @@
         position: absolute;
         width: var(--control-width);
         min-height: 100vh;
-        box-shadow: rgba(0, 0, 0, 0.29) 1px 1px 10px 0px;
-        background: rgba(255, 255, 255, .3);
+        /*box-shadow: rgba(0, 0, 0, 0.29) 1px 1px 10px 0px;*/
+        background: rgba(255, 255, 255, .5);
 
 
         > h1 {

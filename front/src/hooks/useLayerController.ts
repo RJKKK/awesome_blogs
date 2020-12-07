@@ -20,22 +20,10 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         undoFinishedStatus: true as boolean,
         redoFinishedStatus: true as boolean
     })
-    const _state = reactive({
-        current: null as Object,
-        list: [] as Object[],
-        state: [] as string[],
-        index: 0 as number,
-        _index: 0 as number,
-        action: false as boolean,
-        reflash: false as boolean
-    })
-
+    const currentSelect = ref<Object>(null)
     const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    const layersStatus = computed<Object[]>(() => {
-        state.index
-        return canvas ? canvas._objects : []
-    })
+    const brushLibrary = reactive([])
     let clipboard:Object = null
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -199,6 +187,10 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             canvas.on('object:removed', () => {
                 updateCanvasState()
             })
+            canvas.on('selection:created',(e)=>{
+                currentSelect.value = e.target
+                console.log(currentSelect.value)
+            })
         })();
     })
     onUnmounted(() => {
@@ -207,6 +199,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     })
 
     return {
-        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state, getOne, layersStatus
+        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state, getOne,currentSelect
     }
 }
