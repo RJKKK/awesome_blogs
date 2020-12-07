@@ -9,31 +9,46 @@
             <div class="tip">修改作品信息</div>
             <div id="layers" >
                 <div class="test" :style="`background:${colorLibrary[0]}`" >
-                    <span>缩放</span>
-                    <span class="setParams">X缩放: <a-input type="number" v-model:value="scaleX"/></span>
-                    <span class="setParams">Y缩放: <a-input v-model:value="scaleY"/></span>
+                    <span>上移一层</span>
                 </div>
                 <div class="test" :style="`background:${colorLibrary[1]}`" >
-                    <span>旋转</span>
-                    <span class="setParams">deg: <a-input v-model:value="rotate"/></span>
+                    <span>上移到最顶层</span>
+                    <span class="setParams"></span>
                 </div>
                 <div class="test" :style="`background:${colorLibrary[2]}`" >
-                    <span>位置</span>
-                    <span class="setParams">X坐标: <a-input type="number" v-model:value="positonX"/></span>
-                    <span class="setParams">Y坐标: <a-input v-model:value="positionY"/></span>
+                    <span>下移一层</span>
                 </div>
                 <div class="test" :style="`background:${colorLibrary[3]}`" >
+                    <span>下移到最底层</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[4]}`" >
+                    <span>重做</span>
+                    <span class="setParams">Ctrl+Shift+Z</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[5]}`" >
+                    <span>撤回</span>
+                    <span class="setParams">Ctrl+Z</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[6]}`" >
+                    <span>复制</span>
+                    <span class="setParams">Ctrl+C</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[7]}`" >
+                    <span>粘贴</span>
+                    <span class="setParams">Ctrl+V</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[8]}`" >
+                    <span>描边</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[9]}`" >
+                    <span>字体设置</span>
+                </div>
+                <div class="test" :style="`background:${colorLibrary[10]}`" >
                     <span>背景颜色</span>
                     <span class="setParams">颜色值: <a-input type="color" style="height: 20px;border: 0; outline:none"/></span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[4]}`" >
-                    <span>字体颜色</span>
-                </div>
-                <div class="test" :style="`background:${colorLibrary[5]}`" >
-                    <span>描边</span>
-                </div>
-                <div class="test" :style="`background:${colorLibrary[6]}`" >
-                    <span></span>
+                <div class="test" :style="`background:${colorLibrary[11]}`" >
+                    <span>涂鸦模式</span>
                 </div>
             </div>
 
@@ -116,8 +131,8 @@
 
             })
             onMounted(() => {
-                addText('Fire the hot!')
-                addImage('https://api.r10086.com/CG系列1.php')
+                // addText('Fire the hot!')
+                addImage('https://www.madoka-magica.com/img/character.png')
             //     window.setTimeout(() => {
             //         console.log(layersStatus)
             //     }, 5000)
@@ -255,6 +270,8 @@
             width: 100%;
             height: 30px;
             color: white;
+            user-select: none;
+            cursor: pointer;
             padding-left: 1rem;
             line-height: 30px;
             margin: 3px 0;

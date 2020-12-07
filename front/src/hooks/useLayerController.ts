@@ -29,52 +29,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         action: false as boolean,
         reflash: false as boolean
     })
-    const _undo = () => {
-        // console.log(_state)
-        if (_state.index <= 0) return _state.index = 0
-        if (_state.reflash) {
-            _state.index--;
-            _state.reflash = false;
-        }
-        _state._index = _state.index - 1;
-        _state.current = _state.list[_state._index];
-        // console.log(JSON.parse(_state.state[_state._index]))
-        _state.current.setOptions(JSON.parse(_state.state[_state._index]));
-        _state.index--;
-        _state.current.setCoords()
-        // console.log(_state.current)
-        canvas.renderAll()
-        _state.action = true
-    }
-    const _redo = () => {
-        console.log(_state)
-        _state.action = true
-        if (_state.index >= _state.state.length - 1) return null;
-        _state._index = _state.index + 1;
-        _state.current = _state.list[_state._index];
-        _state.current.setOptions(JSON.parse(_state.state[_state._index]))
-        _state.index++;
-        _state.current.setCoords();
-        canvas.renderAll();
-    }
-    const _updateCanvasState = (e: IEvent) => {
-        let obj = e.target
-        // console.log(obj)
-        if (_state.action) {
-            _state.state = [_state.state[_state._index]]
-            _state.list = [_state.list[_state._index]]
-            _state.action = false
-            _state.index = 1;
-        }
-        // obj.saveState()
-        // console.log(JSON.stringify( obj.saveState()))
-        _state.state[_state.index] = JSON.stringify(obj.saveState())
-        _state.list[_state.index] = obj
-        _state.index++;
-        _state._index = _state.index - 1
-        _state.reflash = true
-        // console.log(_state.list)
-    }
+
     const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
     const layersStatus = computed<Object[]>(() => {
@@ -244,16 +199,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             canvas.on('object:removed', () => {
                 updateCanvasState()
             })
-            // canvas.on('object:added', (e) => {
-            //     console.log(e.target)
-            //     _updateCanvasState(e)
-            // })
-            // canvas.on('object:modified', (e) => {
-            //     _updateCanvasState(e)
-            // })
-            // canvas.on('object:removed', (e) => {
-            //     _updateCanvasState(e)
-            // })
         })();
     })
     onUnmounted(() => {

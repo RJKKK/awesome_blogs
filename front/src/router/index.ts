@@ -1,23 +1,22 @@
 import {RouteRecordRaw, createRouter, createWebHistory} from 'vue-router';
 import {getToken} from "../untils/cookies";
-
-
+const Index =  () => import('../views/index.vue')
+const Login = () => import('../views/login.vue')
+const Journal = () => import("../views/journalIndex.vue")
+const Test = () => import("../views/testdemo.vue")
 const routes: RouteRecordRaw[] = [{
     path: '/',
-    // @ts-ignore
-    component: () => import('../views/index.vue'),
+    component: Index,
 }, {
     path: "/login",
-    // @ts-ignore
-    component: () => import('../views/login.vue')
+    component: Login
 }, {
     path: "/journal",
-    // @ts-ignore
-    component: () => import("../views/journalIndex.vue")
+    component: Journal
 }, {
     path: "/test",
     // @ts-ignore
-    component: () => import("../views/testdemo.vue")
+    component: Test
 }
 ];
 const router = createRouter({
