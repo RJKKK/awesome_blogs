@@ -156,7 +156,7 @@
     ::-webkit-color-swatch{position: relative;}
     .switch{
         display: inline-block;
-        margin-left: 800px  ;
+        margin-left: 800px;
     }
 
     #background {
@@ -197,11 +197,12 @@
         }
         /*box-shadow: white 1px 1px 1px 1px;*/
     }
+
     #layerController {
         position: absolute;
         width: var(--control-width);
         min-height: 100vh;
-        left: calc(calc(100vw - 1599px) / 2);
+        left: calc(calc(100vw - 1600px) / 2);
         /*box-shadow: rgba(0, 0, 0, 0.29) 1px 1px 10px 0px;*/
         background: rgba(255, 255, 255, .5);
 
@@ -306,7 +307,11 @@
         /*    margin-top: 30px;*/
         /*}*/
     }
-
+    @media screen and (max-width: 1600px){
+        #layerController{
+            left: 0px;
+        }
+    }
     header {
 
         height: 60px;

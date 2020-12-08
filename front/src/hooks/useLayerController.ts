@@ -1,12 +1,6 @@
-// import * as fabricjs from 'fabric'
 import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, watch} from 'vue'
 import {Object, Image, IEvent} from "fabric/fabric-impl";
-import * as ShortcutsJs from 'shortcuts';
-import {fabric} from "../untils/esModule";
-// @ts-ignore
-const Shortcuts = ShortcutsJs.default.Shortcuts;
-// @ts-ignore
-// const fabric = fabricjs.default.fabric;
+import {fabric,Shortcuts} from "../untils/esModule";
 
 const shortcuts = new Shortcuts({target: document, capture: false});
 
