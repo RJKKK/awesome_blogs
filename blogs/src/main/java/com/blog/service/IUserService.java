@@ -1,12 +1,11 @@
 package com.blog.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.blog.pojo.User;
 
-import java.util.List;
+public interface IUserService extends IService<User> {
 
-public interface IUserService {
+//    List<User> getUserList();
 
-    List<User> getUserList();
-
-    User getUser(int id);
+    User getUserById(int id);
 }
