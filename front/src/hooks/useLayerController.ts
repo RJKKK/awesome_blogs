@@ -1,15 +1,13 @@
-import * as fabricjs from 'fabric'
+// import * as fabricjs from 'fabric'
 import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, watch} from 'vue'
 import {Object, Image, IEvent} from "fabric/fabric-impl";
 import * as ShortcutsJs from 'shortcuts';
-import * as lodashjs from "lodash"
+import {fabric} from "../untils/esModule";
 // @ts-ignore
 const Shortcuts = ShortcutsJs.default.Shortcuts;
 // @ts-ignore
-const fabric = fabricjs.default.fabric;
-import '../untils/fabricjs'
-// @ts-ignore
-const lodash = lodashjs.default
+// const fabric = fabricjs.default.fabric;
+
 const shortcuts = new Shortcuts({target: document, capture: false});
 
 export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Object) {
@@ -23,7 +21,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     const currentSelect = ref<Object>(null)
     const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    const brushLibrary = reactive([])
+    // const brushLibrary = reactive()
     let clipboard:Object = null
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -45,11 +43,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         canvas.requestRenderAll()
     }
     const setClipboard = () => {
-        // const copyObjects: Object[] = canvas.getActiveObjects()
-        // clipboard.value = copyObjects.map(val => {
-        //     return lodash.cloneDeep(val) as Object
-        // })
-        // console.log(canvas.getActiveObject())
         canvas.getActiveObject().clone(clone=>{
             clipboard = clone
         })

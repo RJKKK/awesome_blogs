@@ -163,6 +163,7 @@
         font-family: 'curcle';
         --control-width: 378px;
         background-image: url("../assets/backgrounds/bg (1).jpg");
+        background-color: #E0E0E0;
         /*background-size: cover;*/
         background-position: top center;
         background-repeat: no-repeat;
@@ -200,6 +201,7 @@
         position: absolute;
         width: var(--control-width);
         min-height: 100vh;
+        left: calc(calc(100vw - 1599px) / 2);
         /*box-shadow: rgba(0, 0, 0, 0.29) 1px 1px 10px 0px;*/
         background: rgba(255, 255, 255, .5);
 

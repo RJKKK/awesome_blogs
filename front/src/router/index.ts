@@ -1,8 +1,12 @@
 import {RouteRecordRaw, createRouter, createWebHistory} from 'vue-router';
 import {getToken} from "../untils/cookies";
+// @ts-ignore
 const Index =  () => import('../views/index.vue')
+// @ts-ignore
 const Login = () => import('../views/login.vue')
+// @ts-ignore
 const Journal = () => import("../views/journalIndex.vue")
+// @ts-ignore
 const Test = () => import("../views/testdemo.vue")
 const routes: RouteRecordRaw[] = [{
     path: '/',
@@ -15,7 +19,6 @@ const routes: RouteRecordRaw[] = [{
     component: Journal
 }, {
     path: "/test",
-    // @ts-ignore
     component: Test
 }
 ];
