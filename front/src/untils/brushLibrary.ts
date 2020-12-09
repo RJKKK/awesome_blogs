@@ -1,12 +1,12 @@
 import * as fabricjs from 'fabric'
-import {onMounted, reactive, ref} from 'vue'
+import {nextTick, reactive, ref,Ref} from 'vue'
 // @ts-ignore
 const fabric = fabricjs.default.fabric;
 
-export function useBrushLibrary(canvas: fabric.Canvas) {
+export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
     const brushConfig = reactive({
         lineWidth: 30 as number,
-        lineColor: '#F4BB66' as string,
+        lineColor: 'red' as string,
         shadowColor: '#005A7E' as string,
         shadowWidth: 0 as number,
         shadowOffset: 0 as number
@@ -105,27 +105,52 @@ export function useBrushLibrary(canvas: fabric.Canvas) {
         }
     ] as { name: string, label: string, getPatternSrc: (color: string) => HTMLElement | null }[]
     const brushesArray = ref([])
-    const setBrushMode = (index:number)=>{
-        canvas.freeDrawingBrush = brushesArray[index].brush
+    const setBrushMode = (index: number) => {
+        console.log(brushesArray)
+        canvas.value.freeDrawingBrush = brushesArray.value[index].brush
+        console.log(canvas.value.freeDrawingBrush)
     }
-    const setConfig = () =>{
-        if(canvas.freeDrawingBrush){
-            const brush = canvas.freeDrawingBrush
+    const setConfig = () => {
+        if (canvas.value.freeDrawingBrush) {
+            const brush = canvas.value.freeDrawingBrush
             brush.color = brushConfig.lineColor
-            if(brush.getPatternSrc){
-                brush.
+            // @ts-ignore
+            if (brush.getPatternSrc) {
+                // @ts-ignore
+                brush.source = brush.getPatternSrc.call(brush);
+                brush.width = brushConfig.lineWidth || 1;
+                // @ts-ignore
+                brush.shadow = new fabric.Shadow({
+                    blur: brushConfig.shadowWidth,
+                    offsetX: brushConfig.shadowOffset,
+                    offsetY: brushConfig.shadowOffset,
+                    affectStroke: true,
+                    color: brushConfig.lineColor
+                })
             }
         }
     }
-    onMounted(() => {
+    nextTick(() => {
         library.forEach((val) => {
             const obj = {} as { name: string, label: string, brush: any };
             obj.name = val.name
             obj.label = val.label
-            const brush = val.getPatternSrc ? new fabric.PatternBrush(canvas) : new fabric[val.name](canvas);
+            const brush = val.getPatternSrc ? new fabric.PatternBrush(canvas.value) : new fabric[val.name](canvas.value);
             brush.getPatternSrc = val.getPatternSrc
             obj.brush = brush
             brushesArray.value.push(obj)
         })
+
+        canvas.value.freeDrawingBrush.color = brushConfig.lineColor
+        canvas.value.freeDrawingBrush.width = brushConfig.lineWidth
+        console.log(canvas.value.freeDrawingBrush)
+        // @ts-ignore
+        // canvas.value.freeDrawingBrush.shadow.blur = brushConfig.shadowWidth || 0;
+        // // @ts-ignore
+        // canvas.value.freeDrawingBrush.shadow.offsetX = brushConfig.shadowOffset || 0;
+        // // @ts-ignore
+        // canvas.value.freeDrawingBrush.shadow.offsetY = brushConfig.shadowOffset || 0;
+        setBrushMode(2)
     })
+    return {brushConfig, brushesArray, setBrushMode, setConfig}
 }

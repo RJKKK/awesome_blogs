@@ -1,11 +1,13 @@
-import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, watch} from 'vue'
+import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, onUpdated} from 'vue'
 import {Object, Image, IEvent} from "fabric/fabric-impl";
 import {fabric,Shortcuts} from "../untils/esModule";
+import {useBrushLibrary} from "../untils/brushLibrary";
 
 const shortcuts = new Shortcuts({target: document, capture: false});
 
 export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Object) {
     let canvas: fabric.Canvas = null
+    const _canvas = ref<fabric.Canvas>(null)
     const state = reactive({
         canvasState: [] as any[],
         index: -1 as number,
@@ -15,7 +17,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     const currentSelect = ref<Object>(null)
     const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-
+    const {brushConfig, brushesArray, setBrushMode, setConfig} = useBrushLibrary(_canvas)
     let clipboard:Object = null
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -68,19 +70,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             canvas.setActiveObject(clone);
             canvas.requestRenderAll();
         })
-        // clipboard.value.forEach((val, index) => {
-        //     val.clone(clone => {
-        //         clone.set({
-        //             left: clone.left + 20,
-        //             top: clone.top + 20,
-        //             evented: true
-        //         } as Partial<Object>)
-        //         // console.log(clone.isType('image'))
-        //         canvas.add(clone)
-        //         clipboard.value[index] = clone
-        //         canvas.setActiveObject(clone)
-        //     })
-        // })
 
     }
     const del = () => {
@@ -126,8 +115,10 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     onMounted(() => {
         canvas = new fabric.Canvas(element.value, {
             height: element.value.offsetHeight,
-            width: element.value.offsetWidth
+            width: element.value.offsetWidth,
+            isDrawingMode: true
         })
+        _canvas.value = canvas
         if (jsonContent) {
             canvas.loadFromJSON(jsonContent, () => {
                 state.canvasState.push(canvas.toDatalessJSON())
