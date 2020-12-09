@@ -15,7 +15,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     const currentSelect = ref<Object>(null)
     const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    // const brushLibrary = reactive()
+
     let clipboard:Object = null
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -176,7 +176,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             })
             canvas.on('selection:created',(e)=>{
                 currentSelect.value = e.target
-                console.log(currentSelect.value)
             })
         })();
     })
