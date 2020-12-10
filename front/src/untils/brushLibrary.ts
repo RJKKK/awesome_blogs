@@ -106,9 +106,10 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
     ] as { name: string, label: string, getPatternSrc: (color: string) => HTMLElement | null }[]
     const brushesArray = ref([])
     const setBrushMode = (index: number) => {
-        console.log(brushesArray)
+        // console.log(brushesArray)
         canvas.value.freeDrawingBrush = brushesArray.value[index].brush
-        console.log(canvas.value.freeDrawingBrush)
+        setConfig()
+        // console.log(canvas.value.freeDrawingBrush)
     }
     const setConfig = () => {
         if (canvas.value.freeDrawingBrush) {

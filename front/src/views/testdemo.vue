@@ -1,19 +1,19 @@
 <template>
-    <canvas  ref="canvasElement" width="800" height="800"></canvas>
+    <button @click="fn">开关</button>
+    <diyModelA v-model:window-switch="switch_1" title="设置笔刷属性">
+        1234
+    </diyModelA>
 </template>
 
 <script lang="ts">
     import {defineComponent,onMounted,ref,onUpdated,nextTick} from "vue";
-    import {useLayerController} from '../hooks/useLayerController'
+    import diyModelA from '../components/diyModelA.vue'
     export default defineComponent({
+        components:{diyModelA},
         setup(){
-            const canvasElement = ref<HTMLElement>(null)
-            const {addText,addImage,del,hide,display,setClipboard,paste } = useLayerController(canvasElement)
-            nextTick(()=>{
-                addImage('https://api.r10086.com/CG系列1.php')
-                addText('aabb')
-            })
-            return{canvasElement}
+            const switch_1 = ref<boolean>(false)
+            const fn = ()=>switch_1.value = true
+           return{fn,switch_1}
         }
     })
 </script>

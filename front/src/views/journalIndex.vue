@@ -39,9 +39,11 @@
                 </div>
                 <div class="test" :style="`background:${colorLibrary[8]}`" >
                     <span>描边</span>
+                    <span class="setParams"><AppstoreFilled /></span>
                 </div>
                 <div class="test" :style="`background:${colorLibrary[9]}`" >
                     <span>字体设置</span>
+                    <span class="setParams"><AppstoreFilled /></span>
                 </div>
                 <div class="test" :style="`background:${colorLibrary[10]}`" >
                     <span>背景颜色</span>
@@ -49,6 +51,7 @@
                 </div>
                 <div class="test" :style="`background:${colorLibrary[11]}`" >
                     <span>涂鸦模式</span>
+                    <span class="setParams"><AppstoreFilled /></span>
                 </div>
             </div>
 
@@ -97,12 +100,13 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref, reactive, onMounted, onBeforeMount, nextTick, watch,toRefs} from "vue";
+    import {defineComponent, ref, reactive, onMounted, onBeforeMount,toRefs} from "vue";
+    import {AppstoreFilled} from '@ant-design/icons-vue';
     import {useLayerController} from "../hooks/useLayerController"
 
 
     export default defineComponent({
-
+        components:{AppstoreFilled},
         setup() {
             const element = ref<HTMLElement>(null)
             const {addText, addImage, layersStatus} = useLayerController(element)
