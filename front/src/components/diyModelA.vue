@@ -2,6 +2,9 @@
     <a-modal v-model:visible="Switch"
              dialogClass="diy"
              v-bind="$attrs">
+        <template #header>
+            1235
+        </template>
         <slot></slot>
         <template #footer>
             <a-button key="back">
@@ -12,13 +15,18 @@
             </a-button>
         </template>
     </a-modal>
+    <teleport to="body">
+        <StarFilled/>
+    </teleport>
 </template>
 
 <script lang="ts">
     import {computed, defineComponent} from 'vue'
+    import {StarFilled} from '@ant-design/icons-vue'
 
     export default defineComponent({
         name: "diyModelA",
+        components:{StarFilled},
         props: {windowSwitch: {type: Boolean, default: false}},
         setup(props, context) {
             const Switch = computed<boolean>({
@@ -64,7 +72,7 @@
             text-align: center;
             .ant-modal-title{
                 color: #ef80b9;
-                font-size: 40px;
+                font-size: 30px;
                 /*font-weight: 800;*/
                 text-shadow:  var(--scolor) 2px 0 0, var(--scolor) 0 2px 0, var(--scolor) -2px 0 0, var(--scolor) 0 -2px 0;
             }
