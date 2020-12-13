@@ -1,12 +1,18 @@
 import Loadable from 'react-loadable';
 import React from "react";
+import {RouteProps} from 'react-router'
 import {Redirect} from 'react-router-dom';
-export function routesRemake(routes) {
+interface VueRoute{
+    redirect:any,
+    component:any,
+    routes:(RouteProps&VueRoute)[]
+}
+export function routesRemake(routes:(RouteProps&VueRoute)[]) :any{
     if(!routes)
         return null
     else{
-        return routes.map(route=>{
-            let redirectPath = route.redirect
+        return routes.map((route)=>{
+            const redirectPath = route.redirect
             delete route.redirect
             return {
                 ...route,
@@ -14,7 +20,9 @@ export function routesRemake(routes) {
                 render:redirectPath?()=>(<Redirect to={redirectPath}/>):route.render,
                 component:Loadable({
                     loader:route.component,
-                    loading: () => <div />
+                    /*eslint-disable*/
+                    loading: () => <div/>
+                    /*eslint-disable*/
                 })
             }
         })
