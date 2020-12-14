@@ -14,44 +14,45 @@
         <a-row>
             <a-col :span="4" style="line-height: 36px">笔刷宽度：</a-col>
             <a-col :span="20">
-                <a-slider :min="1" :max="20"/>
+                <a-slider v-model:value="brushConfig.lineWidth" :min="1" :max="20"/>
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">笔刷颜色：</a-col>
             <a-col :span="10">
-                <a-input type="color"/>
+                <a-input type="color"  v-model:value="brushConfig.lineColor" />
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">阴影宽度：</a-col>
             <a-col :span="20">
-                <a-slider :min="1" :max="20"/>
+                <a-slider  v-model:value="brushConfig.shadowWidth"  :min="1" :max="20"/>
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">阴影颜色：</a-col>
             <a-col :span="10">
-                <a-input type="color"/>
+                <a-input type="color"  v-model:value="brushConfig.shadowColor" />
             </a-col>
         </a-row>
         <br>
         <a-row>
-            <a-col :span="4" style="line-height: 36px">阴影颜色：</a-col>
+            <a-col :span="4" style="line-height: 36px">阴影位移：</a-col>
             <a-col :span="20">
-                <a-slider :min="1" :max="20"/>
+                <a-slider   v-model:value="brushConfig.shadowOffset" :min="1" :max="20"/>
             </a-col>
         </a-row>
     </diyModelA>
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref} from "vue";
-    import diyModelA from '../components/protoTypes/diyModelA.vue'
-    import {useBrushLibrary} from "../hooks/brushLibrary";
+    import {defineComponent, ref,onUpdated,toRef} from "vue";
+    import diyModelA from '../protoTypes/diyModelA.vue'
+    import {fabric} from "../../untils/esModule";
+    import {useBrushLibrary} from "../../hooks/brushLibrary";
     export const Switch = ref<boolean>(false)
     export default defineComponent({
         props:{
@@ -74,6 +75,7 @@
             ])
             const mode  = ref<number>(0)
             const {brushConfig, brushesArray, setBrushMode} = useBrushLibrary(props.canvas)
+            // onUpdated(()=>{console.log(props.canvas)})
             return {Switch,selectList,brushConfig, brushesArray, setBrushMode,mode}
         }
     })

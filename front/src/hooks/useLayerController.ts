@@ -1,7 +1,7 @@
 import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, onUpdated} from 'vue'
 import {Object, Image, IEvent} from "fabric/fabric-impl";
 import {fabric,Shortcuts} from "../untils/esModule";
-import {useBrushLibrary} from "../untils/brushLibrary";
+import {useBrushLibrary} from "./brushLibrary";
 
 const shortcuts = new Shortcuts({target: document, capture: false});
 
@@ -17,7 +17,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     const currentSelect = ref<Object>(null)
     const undoStatus = computed<boolean>(() => state.index > 0)
     const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    const {brushConfig, brushesArray, setBrushMode, setConfig} = useBrushLibrary(_canvas)
+    // const {brushConfig, brushesArray, setBrushMode, setConfig} = useBrushLibrary(_canvas)
     let clipboard:Object = null
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
@@ -159,7 +159,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
                 updateCanvasState()
             })
             canvas.on('object:added', (e) => {
-                console.log(e.target)
+                // console.log(e.target)
                 updateCanvasState()
             })
             canvas.on('object:removed', () => {
@@ -176,6 +176,6 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     })
 
     return {
-        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state, getOne,currentSelect
+        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state, getOne,currentSelect,_canvas
     }
 }

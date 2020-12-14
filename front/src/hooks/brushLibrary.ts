@@ -153,7 +153,7 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
 
         canvas.value.freeDrawingBrush.color = brushConfig.lineColor
         canvas.value.freeDrawingBrush.width = brushConfig.lineWidth
-        setBrushMode(2)
+        setBrushMode(0)
         console.log(canvas.value.freeDrawingBrush)
 
     })

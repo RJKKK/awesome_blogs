@@ -95,21 +95,22 @@
                 <canvas ref="element" style="width: 100%;height: 100%"></canvas>
             </div>
         </div>
-
+        <brushesConfig :canvas="_canvas"></brushesConfig>
     </div>
 </template>
 
 <script lang="ts">
     import {defineComponent, ref, reactive, onMounted, onBeforeMount,toRefs} from "vue";
+    import brushesConfig,{Switch} from '../components/dialogs/brushesConfig.vue'
     import {SettingFilled} from '@ant-design/icons-vue';
     import {useLayerController} from "../hooks/useLayerController"
 
 
     export default defineComponent({
-        components:{SettingFilled},
+        components:{SettingFilled,brushesConfig},
         setup() {
             const element = ref<HTMLElement>(null)
-            const {addText, addImage, layersStatus} = useLayerController(element)
+            const {addText, addImage, layersStatus,_canvas} = useLayerController(element)
             const layerParams = reactive<object>({
                 scaleX:1,
                 scaleY:1,
@@ -142,7 +143,7 @@
             //     }, 5000)
             })
 
-            return {element, layersStatus, colorLibrary,...toRefs(layerParams)}
+            return {element, layersStatus, colorLibrary,...toRefs(layerParams),_canvas}
         }
     });
 </script>

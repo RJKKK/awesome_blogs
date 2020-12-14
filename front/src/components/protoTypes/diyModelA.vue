@@ -59,7 +59,7 @@
                 height: 70px;
                 top: -4px;
                 left: 8px;
-                background-image: url("../assets/components/bg_ordinalNumber.png");
+                background-image: url("../../assets/components/bg_ordinalNumber.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -76,6 +76,9 @@
                 /*font-weight: 800;*/
                 text-shadow:  var(--scolor) 2px 0 0, var(--scolor) 0 2px 0, var(--scolor) -2px 0 0, var(--scolor) 0 -2px 0;
             }
+        }
+        .ant-modal-body{
+            padding: 24px 40px;
         }
     }
 
