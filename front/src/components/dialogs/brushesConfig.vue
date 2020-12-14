@@ -49,21 +49,14 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref,onUpdated,toRef} from "vue";
+    import {defineComponent, ref,inject,toRef} from "vue";
     import diyModelA from '../protoTypes/diyModelA.vue'
     import {fabric} from "../../untils/esModule";
-    import {useBrushLibrary} from "../../hooks/brushLibrary";
+    import {useBrushLibrary} from "../../hooks/useBrushLibrary";
     export const Switch = ref<boolean>(false)
     export default defineComponent({
-        props:{
-            canvas:{
-                type:Object,
-                required:true,
-                default:()=>null
-            }
-        },
         components: {diyModelA},
-        setup(props) {
+        setup() {
             const selectList = ref<any[]>([
                 {
                     value: 'lucy',
@@ -74,7 +67,8 @@
                 }
             ])
             const mode  = ref<number>(0)
-            const {brushConfig, brushesArray, setBrushMode} = useBrushLibrary(props.canvas)
+            const canvas = inject('canvas')
+            const {brushConfig, brushesArray, setBrushMode} = useBrushLibrary(canvas)
             // onUpdated(()=>{console.log(props.canvas)})
             return {Switch,selectList,brushConfig, brushesArray, setBrushMode,mode}
         }

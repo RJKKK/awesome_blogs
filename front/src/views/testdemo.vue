@@ -51,7 +51,7 @@
 <script lang="ts">
     import {defineComponent, ref} from "vue";
     import diyModelA from '../components/protoTypes/diyModelA.vue'
-    import {useBrushLibrary} from "../hooks/brushLibrary";
+    import {useBrushLibrary} from "../hooks/useBrushLibrary";
     export const Switch = ref<boolean>(false)
     export default defineComponent({
         props:{

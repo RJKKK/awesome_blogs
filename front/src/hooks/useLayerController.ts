@@ -1,24 +1,16 @@
-import {onMounted, nextTick, ref, Ref, onUnmounted, reactive, computed, onUpdated} from 'vue'
-import {Object, Image, IEvent} from "fabric/fabric-impl";
-import {fabric,Shortcuts} from "../untils/esModule";
-import {useBrushLibrary} from "./brushLibrary";
+import {onMounted, onUnmounted, ref, Ref} from 'vue'
+import {Image, Object} from "fabric/fabric-impl";
+import {fabric, Shortcuts} from "../untils/esModule";
+import {useCanvasState} from "./useCanvsState";
+import {useCanvasAction} from "./useCanvasAction";
 
 const shortcuts = new Shortcuts({target: document, capture: false});
-
 export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Object) {
     let canvas: fabric.Canvas = null
     const _canvas = ref<fabric.Canvas>(null)
-    const state = reactive({
-        canvasState: [] as any[],
-        index: -1 as number,
-        undoFinishedStatus: true as boolean,
-        redoFinishedStatus: true as boolean
-    })
-    const currentSelect = ref<Object>(null)
-    const undoStatus = computed<boolean>(() => state.index > 0)
-    const redoStatus = computed<boolean>(() => state.index < state.canvasState.length - 1)
-    // const {brushConfig, brushesArray, setBrushMode, setConfig} = useBrushLibrary(_canvas)
     let clipboard:Object = null
+    const {undo,redo,redoStatus,undoStatus} = useCanvasState(_canvas,jsonContent)
+    const {hide,display,del} = useCanvasAction(_canvas)
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
         canvas.add(newText)
@@ -30,23 +22,12 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             canvas.add(img)
         })
     }
-    const hide = () => {
-        canvas.getActiveObject().set('opacity', 0)
-        canvas.requestRenderAll()
-    }
-    const display = () => {
-        canvas.getActiveObject().set('opacity', 1)
-        canvas.requestRenderAll()
-    }
     const setClipboard = () => {
         canvas.getActiveObject().clone(clone=>{
             clipboard = clone
         })
     }
     const paste = () => {
-        // canvas.discardActiveObject()
-        // console.log(canvas._activeObject)
-
         clipboard.clone((clone) => {
             canvas.discardActiveObject()
             clone.set({
@@ -70,48 +51,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
             canvas.setActiveObject(clone);
             canvas.requestRenderAll();
         })
-
     }
-    const del = () => {
-        const delObjects: Object[] = canvas.getActiveObjects()
-        delObjects.forEach(val => canvas.remove(val))
-    }
-    const updateCanvasState = () => {
-        // console.log(layersStatus.value)
-        if (state.redoFinishedStatus && state.undoFinishedStatus) {
-            state.canvasState = state.canvasState.slice(0, state.index + 1)
-            state.canvasState.push(canvas.toDatalessJSON())
-            state.index++
-        }
-    }
-    const undo = () => {
-        if (!undoStatus.value) return null;
-        else {
-            state.undoFinishedStatus = false
-            canvas.loadFromJSON(state.canvasState[state.index - 1], () => {
-                state.index--
-                state.undoFinishedStatus = true
-            })
-        }
-    }
-    const redo = () => {
-        if (!redoStatus.value) return null
-        else {
-            state.redoFinishedStatus = false
-            canvas.loadFromJSON(state.canvasState[state.index + 1], () => {
-                state.index++
-                state.redoFinishedStatus = true
-                // console.log(canvas.getObjects())
-            })
-        }
-    }
-    const getOne = (index: number) => {
-        let obj = canvas.item(index)
-        // @ts-ignore
-        canvas.setActiveObject(obj)
-        return obj as unknown as Object
-    }
-
     onMounted(() => {
         canvas = new fabric.Canvas(element.value, {
             height: element.value.offsetHeight,
@@ -120,15 +60,9 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         })
         _canvas.value = canvas
         if (jsonContent) {
-            canvas.loadFromJSON(jsonContent, () => {
-                state.canvasState.push(canvas.toDatalessJSON())
-                state.index++
-            })
-        } else {
-            state.canvasState.push({})
-            state.index++
+            console.log(jsonContent)
         }
-        (() => {
+        (()=>{
             shortcuts.add({
                 handler: () => {
                     paste();
@@ -141,41 +75,12 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
                     return false
                 }, shortcut: "CmdOrCtrl+C"
             })
-            shortcuts.add({
-                handler: () => {
-                    undo()
-                    // canvas.undo();
-                    return false
-                }, shortcut: "CmdOrCtrl+Z"
-            })
-            shortcuts.add({
-                handler: () => {
-                    redo()
-                    // canvas.redo();
-                    return false
-                }, shortcut: "CmdOrCtrl+Shift+Z"
-            })
-            canvas.on('object:modified', () => {
-                updateCanvasState()
-            })
-            canvas.on('object:added', (e) => {
-                // console.log(e.target)
-                updateCanvasState()
-            })
-            canvas.on('object:removed', () => {
-                updateCanvasState()
-            })
-            canvas.on('selection:created',(e)=>{
-                currentSelect.value = e.target
-            })
-        })();
+        })()
     })
     onUnmounted(() => {
-        // document.removeEventListener('keyup', keyCodeForEvent)
         shortcuts.reset()
     })
-
     return {
-        addText, addImage, del, hide, display, setClipboard, paste, undo, redo, state, getOne,currentSelect,_canvas
+        addText, addImage, del, hide, display,_canvas,undo,redo,redoStatus,undoStatus
     }
 }

@@ -1,12 +1,11 @@
-import * as fabricjs from 'fabric'
+import {fabric} from "../untils/esModule";
 import {nextTick, reactive, ref, Ref, watch, onUnmounted} from 'vue'
-// @ts-ignore
-const fabric = fabricjs.default.fabric;
+
 
 export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
     const brushConfig = reactive({
         lineWidth: 30 as number,
-        lineColor: 'red' as string,
+        lineColor: '#23af34' as string,
         shadowColor: '#005A7E' as string,
         shadowWidth: 30 as number,
         shadowOffset: 4 as number
@@ -125,21 +124,26 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
     }
     const setConfig = () => {
         if (canvas.value.freeDrawingBrush) {
-            //@ts-ignore
-            canvas.value.freeDrawingBrush.shadow.blur = brushConfig.shadowWidth;
-            //@ts-ignore
-            canvas.value.freeDrawingBrush.shadow.color = brushConfig.shadowColor;
+            const brush = canvas.value.freeDrawingBrush
             // @ts-ignore
-            canvas.value.freeDrawingBrush.shadow.offsetX = brushConfig.shadowOffset;
+            brush.source = brush.getPatternSrc ? brush.getPatternSrc.call(brush) : null;
+            //@ts-ignore
+            brush.shadow.blur = brushConfig.shadowWidth;
+            //@ts-ignore
+            brush.shadow.color = brushConfig.shadowColor;
             // @ts-ignore
-            canvas.value.freeDrawingBrush.shadow.offsetY = brushConfig.shadowOffset;
-            canvas.value.freeDrawingBrush.width = brushConfig.lineWidth;
-            canvas.value.freeDrawingBrush.color = brushConfig.lineColor
+            brush.shadow.offsetX = brushConfig.shadowOffset;
+            // @ts-ignore
+            brush.shadow.offsetY = brushConfig.shadowOffset;
+            brush.width = brushConfig.lineWidth;
+            brush.color = brushConfig.lineColor
+            // console.log(canvas.value.freeDrawingBrush.color)
         }
     }
-    const watcher = watch(brushConfig, () => {
+    const watcher = watch(brushConfig, (newVal) => {
+        console.log(newVal)
         setConfig()
-    })
+    },{immediate:false})
     nextTick(() => {
         library.forEach((val) => {
             const obj = {} as { name: string, label: string, brush: any };
@@ -153,7 +157,7 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
 
         canvas.value.freeDrawingBrush.color = brushConfig.lineColor
         canvas.value.freeDrawingBrush.width = brushConfig.lineWidth
-        setBrushMode(0)
+        setBrushMode(5)
         console.log(canvas.value.freeDrawingBrush)
 
     })

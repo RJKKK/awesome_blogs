@@ -51,7 +51,7 @@
                 </div>
                 <div class="test" :style="`background:${colorLibrary[11]}`" >
                     <span>涂鸦模式</span>
-                    <span class="setParams"><SettingFilled /></span>
+                    <span class="setParams"><SettingFilled @click="Switch = true"/></span>
                 </div>
             </div>
 
@@ -95,12 +95,12 @@
                 <canvas ref="element" style="width: 100%;height: 100%"></canvas>
             </div>
         </div>
-        <brushesConfig :canvas="_canvas"></brushesConfig>
+        <brushesConfig></brushesConfig>
     </div>
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref, reactive, onMounted, onBeforeMount,toRefs} from "vue";
+    import {defineComponent, ref, reactive, onMounted, onBeforeMount,toRefs,provide,Ref} from "vue";
     import brushesConfig,{Switch} from '../components/dialogs/brushesConfig.vue'
     import {SettingFilled} from '@ant-design/icons-vue';
     import {useLayerController} from "../hooks/useLayerController"
@@ -110,7 +110,8 @@
         components:{SettingFilled,brushesConfig},
         setup() {
             const element = ref<HTMLElement>(null)
-            const {addText, addImage, layersStatus,_canvas} = useLayerController(element)
+            const {addText, addImage,_canvas} = useLayerController(element)
+            provide<(Ref<fabric.Canvas>)>('canvas',_canvas)
             const layerParams = reactive<object>({
                 scaleX:1,
                 scaleY:1,
@@ -143,7 +144,7 @@
             //     }, 5000)
             })
 
-            return {element, layersStatus, colorLibrary,...toRefs(layerParams),_canvas}
+            return {element, colorLibrary,...toRefs(layerParams),Switch}
         }
     });
 </script>
