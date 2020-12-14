@@ -13,4 +13,7 @@
     <!--<select id="getUserByAccount" resultType="com.blog.pojo.User">-->
         <!--select * from user where account=#{account}-->
     <!--</select>-->
+    <select id="checkUsername" resultType="java.lang.Integer" parameterType="string">
+      select count(1) from user where username = #{username}
+    </select>
 </mapper>

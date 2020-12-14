@@ -1,4 +1,4 @@
-package com.blog.pojo;
+package com.blog.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+public class UserVo implements Serializable {
     @TableId
     private int userId;
     private String account;

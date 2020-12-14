@@ -1,11 +1,14 @@
 package com.blog.security;
 
 import com.blog.security.core.entity.RoleEntity;
+import com.blog.security.core.entity.UserEntity;
 import com.blog.security.entity.SelfUserEntity;
 import com.blog.security.service.SelfUserDetailsService;
+import com.blog.security.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -27,7 +30,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private SelfUserDetailsService selfUserDetailsService;
     @Autowired
-    private com.blog.security.core.service.UserService UserService;
+    private UserService UserService;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取表单输入中返回的用户名
@@ -43,16 +46,22 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (!new BCryptPasswordEncoder().matches(password, userInfo.getPassword())) {
             throw new BadCredentialsException("密码不正确");
         }
-//        // 还可以加一些其他信息的判断，比如用户账号已停用等判断
-//        if (userInfo.getStatus().equals("PROHIBIT")){
-//            throw new LockedException("该用户已被冻结");
-//        }
+        // 还可以加一些其他信息的判断，比如用户账号已停用等判断
+        if (userInfo.getStatus() == false){
+            throw new LockedException("该用户已被冻结");
+        }
         // 角色集合
         Set<GrantedAuthority> authorities = new HashSet<>();
-        // 查询用户角色
-        List<RoleEntity> RoleEntityList = UserService.selectRoleByUserId(userInfo.getUserId());
-        for (RoleEntity RoleEntity: RoleEntityList){
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + RoleEntity.getRoleName()));
+//        // 查询用户角色
+//        List<RoleEntity> RoleEntityList = UserService.selectRoleByUserId(userInfo.getUserId());
+//        for (RoleEntity RoleEntity: RoleEntityList){
+//            authorities.add(new SimpleGrantedAuthority("ROLE_" + RoleEntity.getRoleName()));
+//        }
+        //根据type确定用户权限
+        if (userInfo.getType() == true){
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + "ADMIN"));
+        }else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + "USER"));
         }
         userInfo.setAuthorities(authorities);
         // 进行登录

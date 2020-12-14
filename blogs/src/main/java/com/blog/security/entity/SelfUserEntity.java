@@ -29,9 +29,15 @@ public class SelfUserEntity implements Serializable, UserDetails {
 	 */
 	private String password;
 	/**
-	 * 状态:NORMAL正常  PROHIBIT禁用
+	 * 状态:1正常  0禁用
 	 */
-	private String status;
+	private Boolean status;
+
+    /**
+     * 类型：1管理员 0普通用户
+     */
+
+    private Boolean type;
 
 
 	/**

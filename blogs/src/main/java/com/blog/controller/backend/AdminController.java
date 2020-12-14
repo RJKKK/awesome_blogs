@@ -46,7 +46,7 @@ public class AdminController {
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public ServerResponse <User> userLogin(){
 //        SelfUserEntity userDetails = SecurityUtil.getUserInfo();
-        System.out.println(SecurityUtil.getUserId());
+//        System.out.println(SecurityUtil.getUserId());
         User user = iUserService.getUserById(SecurityUtil.getUserId());
         return ServerResponse.createBySuccess("管理端信息",user);
     }
