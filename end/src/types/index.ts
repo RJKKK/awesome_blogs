@@ -4,4 +4,5 @@ export interface Account {
   password?:string
   email?:string
   tel?:number
+  // avatar
 }

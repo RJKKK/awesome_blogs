@@ -22,7 +22,7 @@ export class AuthService {
   async login(account: string) {
     const payload = { account };
     return {
-      access_token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload),
     };
   }
 }

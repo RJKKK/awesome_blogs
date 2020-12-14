@@ -20,7 +20,6 @@ export class AccountsController {
   @Post('/uploadFiles')
   @UseInterceptors(FilesInterceptor('files',null,{preservePath:true}))
   async uploadFiles(@UploadedFiles() files,@Body() body ){
-    console.log(body);
     return new DefaultRes(null,null,'上传成功')
   }
 
@@ -28,7 +27,8 @@ export class AccountsController {
   @Post('/auth/login')
   @ApiOperation({description:'登录接口'})
   async login(@Body() body:LoginReq) {
-    return await this.authService.login(body.account);
+    const token =  await this.authService.login(body.account);
+    return new DefaultRes(token,0,'登录成功！')
 
   }
 
