@@ -2,9 +2,6 @@
     <a-modal v-model:visible="Switch"
              dialogClass="diy"
              v-bind="$attrs">
-        <template #header>
-            1235
-        </template>
         <slot></slot>
         <template #footer>
             <a-button key="back">
@@ -15,9 +12,6 @@
             </a-button>
         </template>
     </a-modal>
-    <teleport to="body">
-        <StarFilled/>
-    </teleport>
 </template>
 
 <script lang="ts">

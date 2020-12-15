@@ -10,7 +10,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
     const _canvas = ref<fabric.Canvas>(null)
     let clipboard:Object = null
     const {undo,redo,redoStatus,undoStatus} = useCanvasState(_canvas,jsonContent)
-    const {hide,display,del} = useCanvasAction(_canvas)
+    const {hide,display,del,brushSwitch} = useCanvasAction(_canvas)
     const addText = (text: string = "") => {
         const newText = new fabric.IText(text)
         canvas.add(newText)
@@ -56,7 +56,7 @@ export function useLayerController(element: Ref<HTMLElement>, jsonContent?: Obje
         canvas = new fabric.Canvas(element.value, {
             height: element.value.offsetHeight,
             width: element.value.offsetWidth,
-            isDrawingMode: true
+            isDrawingMode: false
         })
         _canvas.value = canvas
         if (jsonContent) {

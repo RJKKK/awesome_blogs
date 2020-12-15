@@ -1,5 +1,4 @@
 <template>
-    <button @click="fn">开关</button>
     <diyModelA v-model:window-switch="Switch" title="设置笔刷属性" :footer="null">
         <a-row>
             <a-col :span="4" style="line-height: 36px">笔刷模式</a-col>
@@ -14,42 +13,42 @@
         <a-row>
             <a-col :span="4" style="line-height: 36px">笔刷宽度：</a-col>
             <a-col :span="20">
-                <a-slider v-model:value="brushConfig.lineWidth" :min="1" :max="20"/>
+                <a-slider v-model:value="lineWidth" :min="1" :max="20"/>
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">笔刷颜色：</a-col>
             <a-col :span="10">
-                <a-input type="color"  v-model:value="brushConfig.lineColor" />
+                <a-input type="color"  v-model:value="lineColor" />
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">阴影宽度：</a-col>
             <a-col :span="20">
-                <a-slider  v-model:value="brushConfig.shadowWidth"  :min="1" :max="20"/>
+                <a-slider  v-model:value="shadowWidth"  :min="1" :max="20"/>
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">阴影颜色：</a-col>
             <a-col :span="10">
-                <a-input type="color"  v-model:value="brushConfig.shadowColor" />
+                <a-input type="color"  v-model:value="shadowColor" />
             </a-col>
         </a-row>
         <br>
         <a-row>
             <a-col :span="4" style="line-height: 36px">阴影位移：</a-col>
             <a-col :span="20">
-                <a-slider   v-model:value="brushConfig.shadowOffset" :min="1" :max="20"/>
+                <a-slider   v-model:value="shadowOffset" :min="1" :max="20"/>
             </a-col>
         </a-row>
     </diyModelA>
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref,inject,toRef} from "vue";
+    import {defineComponent, ref,inject,Ref} from "vue";
     import diyModelA from '../protoTypes/diyModelA.vue'
     import {fabric} from "../../untils/esModule";
     import {useBrushLibrary} from "../../hooks/useBrushLibrary";
@@ -67,10 +66,10 @@
                 }
             ])
             const mode  = ref<number>(0)
-            const canvas = inject('canvas')
-            const {brushConfig, brushesArray, setBrushMode} = useBrushLibrary(canvas)
+            const canvas:Ref<fabric.Canvas> = inject('canvas')
+            const {lineWidth,lineColor,shadowColor,shadowWidth,shadowOffset, brushesArray, setBrushMode} = useBrushLibrary(canvas)
             // onUpdated(()=>{console.log(props.canvas)})
-            return {Switch,selectList,brushConfig, brushesArray, setBrushMode,mode}
+            return {Switch,selectList,lineWidth,lineColor,shadowColor,shadowWidth,shadowOffset, brushesArray, setBrushMode,mode}
         }
     })
 </script>
