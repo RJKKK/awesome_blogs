@@ -26,6 +26,7 @@ export function useCanvasState(canvas: Ref<fabric.Canvas>, jsonContent?: Object)
         else {
             state.undoFinishedStatus = false
             canvas.value.loadFromJSON(state.canvasState[state.index - 1], () => {
+                // canvas.value
                 state.index--
                 state.undoFinishedStatus = true
             })
@@ -44,7 +45,8 @@ export function useCanvasState(canvas: Ref<fabric.Canvas>, jsonContent?: Object)
     }
     nextTick(() => {
         if (jsonContent) {
-            canvas.value.loadFromJSON(jsonContent, () => {
+            canvas.value.loadFromJSON(jsonContent, (_canvas) => {
+                canvas.value = _canvas
                 state.canvasState.push(canvas.value.toDatalessJSON())
                 state.index++
             })

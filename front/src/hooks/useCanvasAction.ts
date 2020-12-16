@@ -18,9 +18,7 @@ export function useCanvasAction(canvas: Ref<fabric.Canvas>) {
         const delObjects: Object[] = canvas.value.getActiveObjects()
         delObjects.forEach(val => canvas.value.remove(val))
     }
-    const brushSwitch = () =>{
-        canvas.value.isDrawingMode = !canvas.value.isDrawingMode
-    }
+
     nextTick(() => {
         (() => {
             canvas.value.on('selection:created', (e) => {
@@ -32,6 +30,6 @@ export function useCanvasAction(canvas: Ref<fabric.Canvas>) {
         shortcuts.reset()
     })
     return {
-        hide, display, del,brushSwitch
+        hide, display, del
     }
 }

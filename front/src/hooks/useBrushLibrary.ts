@@ -3,18 +3,11 @@ import {nextTick, reactive, ref, Ref, watch, onUnmounted,toRefs} from 'vue'
 
 
 export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
-    // const brushConfig = reactive({
-    //     lineWidth: 30 as number,
-    //     lineColor: '#23af34' as string,
-    //     shadowColor: '#005A7E' as string,
-    //     shadowWidth: 30 as number,
-    //     shadowOffset: 4 as number
-    // })
-    const lineWidth = ref<number>(30)
-    const lineColor = ref<string>('#23af34')
-    const shadowColor = ref<string>('#005A7E')
-    const shadowWidth = ref<number>(30)
-    const shadowOffset = ref<number>(4)
+    const lineWidth = ref<number>(5)
+    const lineColor = ref<string>('#000000')
+    const shadowColor = ref<string>('#000000')
+    const shadowWidth = ref<number>(0)
+    const shadowOffset = ref<number>(0)
     const library = [
         {
             name: 'hLinePatternBrush',
@@ -101,14 +94,9 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
             name: 'SprayBrush',
             label: '喷雾笔刷',
             getPatternSrc: null
-        },
-        {
-            name: 'PatternBrush',
-            label: '图形笔刷',
-            getPatternSrc: null
         }
     ] as { name: string, label: string, getPatternSrc: (color: string) => HTMLElement | null }[]
-    const brushesArray = ref([])
+    const brushesArray = ref<{name:string,label:string,brush:any}[]>([])
     const setBrushMode = (index: number) => {
         // console.log(brushesArray)
         canvas.value.freeDrawingBrush = brushesArray.value[index].brush
@@ -152,6 +140,9 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
             brush.source = brush.getPatternSrc ? brush.getPatternSrc.call(brush) : null;
             brush.color = lineColor.value
         }
+    }
+    const brushSwitch = (check:boolean) =>{
+        canvas.value.isDrawingMode = check
     }
     const watcher_1 = watch(lineColor, () => {
         setColor()
@@ -205,5 +196,5 @@ export function useBrushLibrary(canvas: Ref<fabric.Canvas>) {
         watcher_4()
         watcher_5()
     })
-    return {lineWidth,lineColor,shadowColor,shadowWidth,shadowOffset, brushesArray, setBrushMode, setAllConfig}
+    return {lineWidth,lineColor,shadowColor,shadowWidth,shadowOffset, brushesArray, setBrushMode, setAllConfig,brushSwitch}
 }
