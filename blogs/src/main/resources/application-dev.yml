@@ -17,6 +17,7 @@ spring:
     url: jdbc:mysql://rm-bp151393ejp8188wzgo.mysql.rds.aliyuncs.com:3306/awesome_blogs?serverTimezone=UTC&userUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
+
 #    type: com.alibaba.druid.pool.DruidDataSource
 #    initialSize: 5
 #    minIdle: 5
@@ -46,7 +47,7 @@ jwt:
   # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
   expiration: 604800
   # 配置不需要认证的接口
-  antMatchers: /index/**,/login/**,/favicon.ico,/swagger-ui.html/**,/swagger-resources/**,/webjars/**,/v2/**
+  antMatchers: /index/**,/login/**,/favicon.ico
 #mybatis:
 #  type-aliases-package: com.blog.pojo
 #  mapper-locations: classpath:mapper/*.xml
@@ -74,5 +75,3 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8088
-swagger:
-  enable: true

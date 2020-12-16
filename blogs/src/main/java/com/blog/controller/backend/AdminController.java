@@ -12,6 +12,8 @@ import com.blog.security.entity.SelfUserEntity;
 import com.blog.service.IUserService;
 import com.blog.utils.ResultUtil;
 import com.blog.utils.SecurityUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import java.util.Map;
  * 管理端
 
  */
+@Api(tags = "管理员控制器")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -42,6 +45,7 @@ public class AdminController {
      * 管理端信息
      * @Return Map<String,Object> 返回数据MAP
      */
+    @ApiOperation("返回用户数据")
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public ServerResponse <User> userLogin(){
