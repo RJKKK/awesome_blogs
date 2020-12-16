@@ -1,26 +1,12 @@
 import React from 'react';
-import { HashRouter, Switch } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
-import { routesRemake } from '../untils/router_config';
-import { RouteProps } from 'react-router';
-interface VueRoute {
-    redirect: any,
-    component: any,
-    routes: (RouteProps & VueRoute)[]
-}
-const routes = [{
-    path: '/',
-    exact:true,
-    component: ()=>import('../views/MainContent'),
+import {lazy} from 'react-router-guard'
+import {IConfig} from 'react-router-guard/dist/models'
 
-}];
-
-const Router:any = () => (
-    <HashRouter>
-        <Switch>
-            {renderRoutes(routesRemake(routes as (RouteProps & VueRoute)[]))}
-        </Switch>
-    </HashRouter>
-);
-
-export default Router;
+export const router: IConfig[] = [
+    {
+        path: '/',
+        component: lazy(() => import('../views/MainContent')),
+        exact:true,
+        canActivate:[]
+    }
+];

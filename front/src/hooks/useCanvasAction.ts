@@ -18,6 +18,7 @@ export function useCanvasAction(canvas: Ref<fabric.Canvas>) {
         const delObjects: Object[] = canvas.value.getActiveObjects()
         delObjects.forEach(val => canvas.value.remove(val))
     }
+
     nextTick(() => {
         (() => {
             canvas.value.on('selection:created', (e) => {

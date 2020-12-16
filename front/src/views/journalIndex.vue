@@ -21,11 +21,11 @@
                 <div class="test" :style="`background:${colorLibrary[3]}`" >
                     <span>下移到最底层</span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[4]}`" >
+                <div class="test" :style="`background:${colorLibrary[4]}`" @click="redoStatus&&redo()" >
                     <span>重做</span>
                     <span class="setParams">Ctrl+Shift+Z</span>
                 </div>
-                <div class="test" :style="`background:${colorLibrary[5]}`" >
+                <div class="test" :style="`background:${colorLibrary[5]}`" @click="undoStatus&&undo()" >
                     <span>撤回</span>
                     <span class="setParams">Ctrl+Z</span>
                 </div>
@@ -110,7 +110,7 @@
         components:{SettingFilled,brushesConfig},
         setup() {
             const element = ref<HTMLElement>(null)
-            const {addText, addImage,_canvas} = useLayerController(element)
+            const {addText, addImage,_canvas,undo,redo,redoStatus,undoStatus} = useLayerController(element)
             provide<(Ref<fabric.Canvas>)>('canvas',_canvas)
             const layerParams = reactive<object>({
                 scaleX:1,
@@ -144,7 +144,7 @@
             //     }, 5000)
             })
 
-            return {element, colorLibrary,...toRefs(layerParams),Switch}
+            return {element, colorLibrary,...toRefs(layerParams),Switch,undo,redo,redoStatus,undoStatus}
         }
     });
 </script>
