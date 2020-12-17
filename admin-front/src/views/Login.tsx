@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import styled from "styled-components";
 import {Form,Input} from 'antd'
+import useMyForm from "../hook/useMyForm";
+import {loginForm} from "../api/reqInterface";
+import {account} from "../untils/FormValidation";
 export default function Login() {
     const Style = styled('div')`
  #login{
@@ -47,19 +50,21 @@ export default function Login() {
         color:rgba(0,0,0,0)
     }
 `
-
+    const [form] = Form.useForm()
+    // @ts-ignore
     return (
         <Style>
-            <Form id="login">
+            <Form id="login" form={form}>
                 <h2>管理员登入</h2>
-                <Form.Item className="row">
+                <Form.Item name={'account'} className="row"  >
                     <Input type="text" id='username'/>
-                    <label htmlFor="username">用户名</label>
                 </Form.Item>
-                <Form.Item className="row">
+                <label htmlFor="username">用户名</label>
+                <Form.Item name={'password'} className="row">
                     <Input type="password" id='pwd'/>
-                    <label htmlFor="pwd">密码</label>
                 </Form.Item>
+                <Form.Item><label htmlFor="pwd">密码</label></Form.Item>
+
             </Form>
         </Style>
     )

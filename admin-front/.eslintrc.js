@@ -14,7 +14,9 @@ module.exports = {
     rules: {
       // 自定义规则
       // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-      'linebreak-style': 'off'
+      'linebreak-style': 'off',
+        '@typescript-eslint/ban-ts-comment':'off',
+        '@typescript-eslint/ban-types':'off'
     },
     settings: {
       react: {
@@ -22,4 +24,4 @@ module.exports = {
       },
     },
   };
-  
+
