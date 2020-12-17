@@ -9,6 +9,9 @@ export interface UserInfoRes {
    username: string
    email: string
 }
-export interface LoginResApiFunction {
-   (data: any): Promise<LoginRes>
+ interface ResApiFunction {
+   Function(data: any): Promise<LoginRes>;
+    Function(data: any): Promise<UserInfoRes>
 }
+
+export default ResApiFunction

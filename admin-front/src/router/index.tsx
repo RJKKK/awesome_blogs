@@ -8,5 +8,11 @@ export const router: IConfig[] = [
         component: lazy(() => import('../views/MainContent')),
         exact:true,
         canActivate:[]
+    },
+    {
+        path: '/login',
+        component: lazy(() => import('../views/Login')),
+        exact:true,
+        canActivate:[]
     }
 ];
