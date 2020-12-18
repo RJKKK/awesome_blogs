@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import styled from "styled-components";
 import {Form, Input,Button} from 'antd'
-import useMyForm from "../hook/useMyForm";
+import {useMyForm} from "../hook/useMyForm";
 import {loginForm} from "../api/reqInterface";
 import {account as rAccount, password as rPassword} from "../untils/FormValidation";
+import {LoginRes} from "../api/resInterface";
+import {loginApi} from "../api";
 const Style = styled('div')`
  .login{
         margin:0;
@@ -51,14 +53,13 @@ const Style = styled('div')`
 `
 export default function Login() {
 
-   const [password,setPassword] = useState<string>('')
-    const [account,setAccount] = useState<string>('')
-    const [form] = Form.useForm()
-    const toLogin = ()=>{
-       form.validateFields().then(()=>{
-           console.log('提交了')
-       }).catch(()=>{console.log('未通过验证')})
-    }
+   const {form,state,setState,handleSubmit} = useMyForm<loginForm,LoginRes>({
+       account:'',
+       password:''
+   },loginApi,(res)=>{
+       console.log(res)
+   })
+
     return (
         <Style>
             <Form className="login" form={form}>
@@ -66,8 +67,8 @@ export default function Login() {
                 <div className="row">
                     <Form.Item name={'account'} rules={rAccount} label={'账号'}>
                         <Input type="text" id='username'
-                               onChange={e=>setAccount(e.target.value)}
-                               value={account}/>
+                               onChange={e=>setState('account',e)}
+                               value={state.account}/>
                         {/*<label htmlFor="username">用户名</label>*/}
                     </Form.Item>
 
@@ -76,15 +77,15 @@ export default function Login() {
                 <div className="row">
                     <Form.Item name={'password'} className="row" rules={rPassword} label={'密码'}>
                         <Input type="password" id='pwd'
-                               onChange={e=>setPassword(e.target.value)}
-                               value={password}
+                               onChange={e=>setState('password',e)}
+                               value={state.password}
                         />
                         {/*<label htmlFor="pwd">密码</label>*/}
                     </Form.Item>
 
                 </div>
 
-                <Button onClick={toLogin}>登录</Button>
+                <Button onClick={handleSubmit}>登录</Button>
             </Form>
         </Style>
     )
