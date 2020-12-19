@@ -4,7 +4,7 @@ spring:
     # 迁移前校验 SQL 文件是否存在问题
     validate-on-migrate: true
     # 生产环境一定要关闭
-    clean-disabled: true
+    clean-disabled: false
     # 校验路径下是否存在 SQL 文件
     check-location: false
     # 最开始已经存在表结构，且不存在 flyway_schema_history 表时，需要设置为 true
@@ -74,6 +74,6 @@ mybatis-plus:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8088
+  port: 8089
 swagger:
-  enable: true
+  enable: false
