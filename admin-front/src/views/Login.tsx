@@ -7,49 +7,71 @@ import {account as rAccount, password as rPassword} from "../untils/FormValidati
 import {LoginRes} from "../api/resInterface";
 import {loginApi} from "../api";
 const Style = styled('div')`
- .login{
-        margin:0;
-        background-color: #29f1c3;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        flex-direction:column;
-        min-height:100vh;
+
+.login-container {
+    height: calc(100vh - 156px);
+}
+
+.login-form-container {
+    border-radius: 5px;
+    width: 343px;
+    height: 434px;
+    background: white;
+    right: 10%;
+    top: 194px;
+    position: absolute;
+    border: 1px solid #DCDFE6;
+
+    .el-form-item__content {
+        width: 100%;
     }
-    .row{
-        width: 400px;
-        //margin:.6rem 0;
-        //position: relative;
-        // display:flex;
-        // justify-content:center;
-        // align-items:center;
-        // flex-direction:column;
-        // min-height:100vh;
+
+    .login-form {
+        padding: 15px 25px 10px 25px;
     }
-    //.row input{
-    //    font-size:1rem;
-    //    border: 1px green solid;
-    //    border-radius:4px;
-    //    box-sizing:border-box;
-    //    padding:.8rem 1rem;
-    //    box-shadow:0px 1px 2px rgba(0,0,0,.25);
-    //    width: 100%;
-    //    outline:none;
-    //    // placeholder:' ';
-    //}
-    //.row label{
-    //    position:absolute;
-    //    left:0px;
-    //    padding-left:1rem;
-    //    padding-top:.8rem;
-    //    transition:all .3s ease-in-out;
-    //}
-    //.row input:focus + label{
-    //    transform:translatex(calc(-100% - 1rem));
-    //}
-    //.row input:not(:focus):not(:placeholder-shown) + label{
-    //    color:rgba(0,0,0,0)
-    //}
+
+    .label {
+        text-align: left;
+        padding-bottom: 10px;
+        font-size: $font-third-size;
+    }
+
+    .login-button {
+        padding-top: 20px;
+    }
+
+    .login-others {
+        padding-top: 15px;
+        font-size: $font-forth-size;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+
+    .login-form-bottom {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        background: #F2F6FC;
+        color: #31A8FF;
+        width: 100%;
+        text-align: center;
+        height: 56px;
+        line-height: 56px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .login-fotgetPwd {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+   
 `
 export default function Login() {
 
@@ -62,31 +84,31 @@ export default function Login() {
 
     return (
         <Style>
-            <Form className="login" form={form}>
-                <h2>管理员登入</h2>
-                <div className="row">
-                    <Form.Item name={'account'} rules={rAccount} label={'账号'}>
+            <div className={'login-form-container'}>
+                <Form className="login-form" form={form}>
+                    <div className="title">欢迎登录</div>
+                    <div className="label">账号</div>
+                    <Form.Item name={'account'} rules={rAccount}>
                         <Input type="text" id='username'
                                onChange={e=>setState('account',e)}
                                value={state.account}/>
                         {/*<label htmlFor="username">用户名</label>*/}
                     </Form.Item>
-
-                </div>
-
-                <div className="row">
-                    <Form.Item name={'password'} className="row" rules={rPassword} label={'密码'}>
+                    <div className="label">密码</div>
+                    <Form.Item name={'password'} rules={rPassword}>
                         <Input type="password" id='pwd'
                                onChange={e=>setState('password',e)}
                                value={state.password}
                         />
                         {/*<label htmlFor="pwd">密码</label>*/}
                     </Form.Item>
+                    <Button  onClick={handleSubmit} size={'large'} style={{width:"100%"}} type={'primary'}>登录</Button>
+                    <div className={"login-form-bottom"}>
+                        未有账号？立即注册
+                    </div>
+                </Form>
+            </div>
 
-                </div>
-
-                <Button onClick={handleSubmit}>登录</Button>
-            </Form>
         </Style>
     )
 }
