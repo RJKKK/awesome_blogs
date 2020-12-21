@@ -4,7 +4,10 @@ export interface LoginRes {
 export interface UserInfoRes {
     account: string
     avatar: string
-    username: string
+    name: string
     email: string
+}
+export interface registerRes {
+
 }
 

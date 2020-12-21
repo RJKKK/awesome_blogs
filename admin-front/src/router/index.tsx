@@ -14,5 +14,11 @@ export const router: IConfig[] = [
         component: lazy(() => import('../views/Login')),
         exact:true,
         canActivate:[]
+    },
+    {
+        path: '/register',
+        component: lazy(() => import('../views/Register')),
+        exact:true,
+        canActivate:[]
     }
 ];
