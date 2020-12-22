@@ -20,5 +20,11 @@ export const router: IConfig[] = [
         component: lazy(() => import('../views/Register')),
         exact:true,
         canActivate:[]
+    },
+    {
+        path:'/test',
+        component:lazy(() => import('../components/CombineTable')),
+        exact:true,
+        canActivate:[]
     }
 ];

@@ -74,7 +74,7 @@ export const MySpin = (props: { App: React.ReactNode; }) => {
         })
     }, [])
     return (
-        <Spin spinning={loading}>
+        <Spin spinning={loading} style={{position:'static'}}>
             {props.App}
         </Spin>
     )
