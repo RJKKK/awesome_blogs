@@ -2,9 +2,7 @@ package com.blog.controller.portal;
 
 import com.blog.common.ServerResponse;
 import com.blog.pojo.Menu;
-import com.blog.pojo.User;
-import com.blog.service.IUserService;
-import com.blog.vo.UserVo;
+import com.blog.service.IMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "前台用户控制器")
+@Api(tags = "前台权限控制器")
 @RestController
-@RequestMapping("/user")
-public class UserController {
-
+@RequestMapping("/auth")
+public class AuthController {
     @Autowired
-    private IUserService iUserService;
+    private IMenuService menuService;
 
-    @ApiOperation("注册用户")
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ServerResponse<String> register(UserVo userVo){
-
-        return iUserService.register(userVo);
+    @ApiOperation("获取权限信息")
+    @RequestMapping(value = "/getAuthInfo",method = RequestMethod.POST)
+    public ServerResponse<Menu> getAuthorization(Integer MenuId){
+        System.out.println(MenuId);
+        return menuService.getAuthorization(MenuId);
     }
-
 
 }

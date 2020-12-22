@@ -77,7 +77,7 @@ public class AdminController {
 //    @RequestMapping(value = "/menuList",method = RequestMethod.GET)
 //    public Map<String,Object> menuList(){
 //        Map<String,Object> result = new HashMap<>();
-//        List<MenuEntity> MenuEntityList = MenuService.list();
+//        List<MenuEntity> MenuEntityList = .list();
 //        result.put("title","拥有用户和管理员角色都可以查看");
 //        result.put("data",MenuEntityList);
 //        return ResultUtil.resultSuccess(result);

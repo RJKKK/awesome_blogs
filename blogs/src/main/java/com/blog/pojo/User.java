@@ -35,6 +35,8 @@ public class User implements Serializable {
     private Date createTime;
     @ApiModelProperty("用户最后修改时间")
     private Date updateTime;
+    @ApiModelProperty("邮箱")
+    private String email;
     @ApiModelProperty("电话")
     private int phone;
 

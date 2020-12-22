@@ -16,26 +16,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserVo implements Serializable {
 
-    @TableId
-    @ApiModelProperty("用户ID")
-    private int userId;
     @ApiModelProperty("用户账号名")
     private String account;
-    @ApiModelProperty("用户名")
+    @ApiModelProperty("用户名,如果用户名不填，默认为Account")
     private String username;
     @ApiModelProperty("用户密码")
     private String password;
-    @ApiModelProperty("用户状态")
-    private boolean status;
-    @ApiModelProperty("用户类型")
-    private boolean type;
-    @ApiModelProperty("用户权限")
-    private String auth;
-    @ApiModelProperty("用户创建时间")
-    private Date createTime;
-    @ApiModelProperty("用户最后修改时间")
-    private Date updateTime;
-    @ApiModelProperty("电话")
-    private int phone;
-
+    @ApiModelProperty("邮箱")
+    private String email;
 }

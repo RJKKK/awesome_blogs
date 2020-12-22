@@ -16,4 +16,7 @@
     <select id="checkUsername" resultType="java.lang.Integer" parameterType="string">
       select count(1) from user where username = #{username}
     </select>
+    <select id="checkEmail" resultType="java.lang.Integer" parameterType="string">
+      select count(1) from user where email = #{email}
+    </select>
 </mapper>

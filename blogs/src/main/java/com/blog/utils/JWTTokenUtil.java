@@ -14,7 +14,6 @@ import java.util.Date;
  */
 @Slf4j
 public class JWTTokenUtil {
-    private static final String SALT = "83G6GvsDetCTB1cX";
 
     /**
      * 私有化构造器
