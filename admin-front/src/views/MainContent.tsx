@@ -12,7 +12,7 @@ import styled from "styled-components";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
-export default function MainContent() {
+export default function MainContent(props: { children: any; location: any; }) {
     const Style = styled('div')`
  .logo {
   height: 32px;
@@ -24,6 +24,7 @@ export default function MainContent() {
 }
 `
     const [collapsed, setCollapsed] = useState(false)
+    const { children, location } = props;
     return (
         <Style>
             <Layout style={{minHeight: '100vh'}}>
@@ -56,7 +57,7 @@ export default function MainContent() {
                             <Breadcrumb.Item>Bill</Breadcrumb.Item>
                         </Breadcrumb>
                         <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-                            {/*{(props.route.routes&&renderRoutes(props.route.routes))}*/}
+                            {children}
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>

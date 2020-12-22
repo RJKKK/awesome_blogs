@@ -81,14 +81,12 @@ export const Style = styled('div')`
     }
 `
 export default function Login(props: { history: { replace: (arg0: string) => void; }; }) {
-
     const {form, state, setState, handleSubmit} = useMyForm<loginForm, LoginRes>({
         account: '',
         password: ''
     }, loginApi, (res) => {
         console.log(res)
     })
-
     return (
         <Style>
             <div className={'login-form-container'}>

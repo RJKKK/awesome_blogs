@@ -16,7 +16,8 @@ module.exports = {
       // e.g. "@typescript-eslint/explicit-function-return-type": "off",
       'linebreak-style': 'off',
         '@typescript-eslint/ban-ts-comment':'off',
-        '@typescript-eslint/ban-types':'off'
+        '@typescript-eslint/ban-types':'off',
+        "@typescript-eslint/no-var-requires":'off'
     },
     settings: {
       react: {
