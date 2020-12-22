@@ -1,30 +1,43 @@
 import React from 'react';
 import {lazy} from 'react-router-guard'
-import {IConfig} from 'react-router-guard/dist/models'
-
-export const router: IConfig[] = [
+import {RouteConfig} from '../untils/interfaces'
+import {checkLogin} from "../untils/routerGuard";
+export const router: RouteConfig[] = [
     {
-        path: '/',
+        path:'/',
+        redirect:'/index',
+        exact:true
+    },
+    {
+        path: '/index',
         component: lazy(() => import('../views/MainContent')),
-        exact:true,
-        canActivate:[]
+        canActivate: [],
+        routes: [{
+            path:'/index',
+            redirect:'/index/main'
+        },{
+            path:'/index/main',
+            component:lazy(() => import('../components/CombineTable')),
+            exact: true,
+        }
+        ]
     },
     {
         path: '/login',
         component: lazy(() => import('../views/Login')),
-        exact:true,
-        canActivate:[]
+        exact: true,
+        canActivate: []
     },
     {
         path: '/register',
         component: lazy(() => import('../views/Register')),
-        exact:true,
-        canActivate:[]
+        exact: true,
+        canActivate: []
     },
     {
-        path:'/test',
-        component:lazy(() => import('../components/CombineTable')),
-        exact:true,
-        canActivate:[]
+        path: '/test',
+        component: lazy(() => import('../components/CombineTable')),
+        exact: true,
+        canActivate: []
     }
 ];

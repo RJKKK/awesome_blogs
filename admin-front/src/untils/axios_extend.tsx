@@ -1,6 +1,8 @@
-import Axios from "axios";
+import Axios, {AxiosResponse} from "axios";
 import {message, Spin} from 'antd'
+import {get as getCookies} from 'js-cookie'
 import React, { useEffect, useState} from "react";
+import {XMLdata} from "./interfaces";
 
 const normalReq = Axios.create({
     baseURL: '/api',
@@ -10,16 +12,16 @@ const normalReq = Axios.create({
 const spinSwitch = {loading: false}
 
 export function get<T>(url: string, params: any, data: any) {
-    return normalReq.get<T>(url, {params, data})
+    return normalReq.get<T,AxiosResponse<XMLdata<T>>>(url, {params, data})
 }
 
 export function post<T>(url: string, data: any) {
-    return normalReq.post<T>(url, data)
+    return normalReq.post<T,AxiosResponse<XMLdata<T>>>(url, data)
 }
 
 normalReq.interceptors.request.use(config => {
     spinSwitch.loading = true
-    // config.headers = { ...config.headers, Authorization: `Bearer ${getToken()}` }
+    config.headers = { ...config.headers, Authorization: getCookies('token') }
     return config
 })
 normalReq.interceptors.response.use(res => {

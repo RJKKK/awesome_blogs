@@ -13,3 +13,4 @@ export const registerApi = async (data:registerForm)=>{
     const res = await post<registerRes>('auth/register', {...data,password:md5(password)})
     return res.data
 }
+
