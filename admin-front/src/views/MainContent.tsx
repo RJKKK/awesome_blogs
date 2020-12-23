@@ -12,8 +12,7 @@ import styled from "styled-components";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
-export default function MainContent(props: { children: any; location: any; }) {
-    const Style = styled('div')`
+const Style = styled('div')`
  .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
@@ -23,6 +22,7 @@ export default function MainContent(props: { children: any; location: any; }) {
   background: #fff;
 }
 `
+export default function MainContent(props: { children: any; location: any; }) {
     const [collapsed, setCollapsed] = useState(false)
     const { children, location } = props;
     return (
