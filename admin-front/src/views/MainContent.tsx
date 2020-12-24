@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Layout, Menu, Breadcrumb} from 'antd';
+import {Layout, Menu, Breadcrumb,} from 'antd';
 import {
     DesktopOutlined,
     PieChartOutlined,
@@ -8,6 +8,7 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import styled from "styled-components";
+
 
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -22,6 +23,8 @@ const Style = styled('div')`
   background: #fff;
 }
 `
+
+
 export default function MainContent(props: { children: any; location: any; }) {
     const [collapsed, setCollapsed] = useState(false)
     const { children, location } = props;

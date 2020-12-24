@@ -1,7 +1,12 @@
 import React from "react";
-import {Button, Table,Input} from 'antd'
-import {SearchOutlined} from'@ant-design/icons'
+import {Button, Table, Input} from 'antd'
+import {SearchOutlined} from '@ant-design/icons'
 import styled from "styled-components";
+import {TableProps as RcTableProps} from "rc-table/lib/Table";
+import {ColumnsType} from "antd/lib/table/interface";
+import {UserInfoRes, userListRes} from "../api/resInterface";
+import {account} from "../untils/FormValidation";
+
 const Style = styled('div')`
 
    .middle {
@@ -39,27 +44,30 @@ const Style = styled('div')`
 }
   }
 `
-export default () =>{
-    const dataSource = [
+export default () => {
+    const dataSource:RcTableProps<{
+        account:string,key:number
+    }>['data'] = [
         {
-            key: '1',
-            name: '胡彦斌',
-            age: 32,
-            address: '西湖区湖底公园1号',
-        },
-        {
-            key: '2',
-            name: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号',
+            key: 1,
+            account:'qwe'
+
         },
     ];
 
-    const columns = [
+    const columns:ColumnsType<{
+        account:string
+    }> = [
         {
             title: '姓名',
-            dataIndex: 'name',
+            dataIndex: 'string',
             key: 'name',
+            render(text,record,index){
+                return <>
+                    {record+text+index}
+                </>
+            }
+
         },
         {
             title: '年龄',
@@ -73,19 +81,19 @@ export default () =>{
         },
     ];
 
-    return(
+    return (
         <Style>
             <div className="middle">
                 <div className="left">
                     <Button>删除用户</Button>
                 </div>
                 <div className="right">
-                    <SearchOutlined /><Input/>
+                    <SearchOutlined/><Input/>
                 </div>
             </div>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={dataSource} columns={columns }/>
 
         </Style>
-        );
+    );
 
 }

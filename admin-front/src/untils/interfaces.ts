@@ -1,5 +1,13 @@
 import {IConfig} from 'react-router-guard/dist/models'
 
+/**
+ * @param path: string
+ * @param component: () => void;
+ * @param redirect: string;
+ * @param exact: boolean;
+ * @param canActivate: Array
+ * @param routes:RouteConfig[]
+ **/
 // @ts-ignore
 export interface RouteConfig extends IConfig{
     path: string;
