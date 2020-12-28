@@ -4,8 +4,9 @@ import {SearchOutlined} from '@ant-design/icons'
 import styled from "styled-components";
 import {TableProps as RcTableProps} from "rc-table/lib/Table";
 import {ColumnsType} from "antd/lib/table/interface";
-import {UserInfoRes, userListRes} from "../api/resInterface";
+import {useLifecycles, useList, useSetState} from 'react-use'
 import {account} from "../untils/FormValidation";
+import {useApi} from "../hook/useApi";
 
 const Style = styled('div')`
 
@@ -44,42 +45,30 @@ const Style = styled('div')`
 }
   }
 `
-export default () => {
-    const dataSource:RcTableProps<{
-        account:string,key:number
-    }>['data'] = [
-        {
-            key: 1,
-            account:'qwe'
+export default function <T extends object>(props: {
+    columns: ColumnsType<T>;
+    Api: Promise<Function>; }) {
+    const [params,setParams] = useSetState({
+        keywords:'',
+        pageSize:10,
+        pageNumber:1
+    });
+    const {state,fetch} = useApi<T>(async function()  {
+      const res = (await props.Api)(params)
+        return {...res,list:res.list.map((val: T, index: number)=>{
+            return{...val,key:index as number}
+            })}
+    })
+    useLifecycles(async ()=>{
+       await fetch()
+    })
+    const editor = <>
+        <a href="javascript:;">编辑</a>
+        <a href='javascript:;'>查看</a>
+        <a href="javascript:;">删除</a>
+    </>
 
-        },
-    ];
 
-    const columns:ColumnsType<{
-        account:string
-    }> = [
-        {
-            title: '姓名',
-            dataIndex: 'string',
-            key: 'name',
-            render(text,record,index){
-                return <>
-                    {record+text+index}
-                </>
-            }
-
-        },
-        {
-            title: '年龄',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: '住址',
-            dataIndex: 'address',
-            key: 'address',
-        },
-    ];
 
     return (
         <Style>
@@ -88,10 +77,10 @@ export default () => {
                     <Button>删除用户</Button>
                 </div>
                 <div className="right">
-                    <SearchOutlined/><Input/>
+                    <SearchOutlined onClick={fetch} /><Input/>
                 </div>
             </div>
-            <Table dataSource={dataSource} columns={columns }/>
+            <Table dataSource={state.value?state.value.list:[]} columns={props.columns}/>
 
         </Style>
     );
