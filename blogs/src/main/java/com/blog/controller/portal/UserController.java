@@ -23,7 +23,6 @@ public class UserController {
     @ApiOperation("注册用户")
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public ServerResponse<String> register(UserVo userVo){
-
         return iUserService.register(userVo);
     }
 

@@ -33,11 +33,13 @@ public class JWTTokenUtil {
                 // 主题
                 .setSubject(selfUserEntity.getUsername())
                 // 签发时间
-                .setIssuedAt(new Date())
+//                .setIssuedAt(new Date())
                 // 签发者
                 .setIssuer("mi")
                 // 自定义属性 放入用户拥有权限
                 .claim("authorities", JSON.toJSONString(selfUserEntity.getAuthorities()))
+                //自定义属性 放入路由路径
+                .claim("auth", JSON.toJSONString(selfUserEntity.getAuth()))
                 // 失效时间
                 .setExpiration(new Date(System.currentTimeMillis() + JWTConfig.expiration))
                 // 签名算法和密钥

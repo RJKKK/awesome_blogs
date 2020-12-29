@@ -2,15 +2,7 @@ package com.blog.controller.backend;
 
 import com.blog.common.ServerResponse;
 import com.blog.pojo.User;
-import com.blog.security.core.entity.MenuEntity;
-import com.blog.security.core.entity.RoleEntity;
-import com.blog.security.core.entity.UserEntity;
-import com.blog.security.core.service.MenuService;
-import com.blog.security.core.service.RoleService;
-import com.blog.security.core.service.UserService;
-import com.blog.security.entity.SelfUserEntity;
 import com.blog.service.IUserService;
-import com.blog.utils.ResultUtil;
 import com.blog.utils.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 管理端
@@ -33,12 +22,6 @@ import java.util.Map;
 public class AdminController {
 
     @Autowired
-    private UserService UserService;
-    @Autowired
-    private RoleService RoleService;
-    @Autowired
-    private MenuService MenuService;
-    @Autowired
     private IUserService iUserService;
 
     /**
@@ -46,7 +29,7 @@ public class AdminController {
      * @Return Map<String,Object> 返回数据MAP
      */
     @ApiOperation("返回用户数据")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public ServerResponse <User> userLogin(){
 //        SelfUserEntity userDetails = SecurityUtil.getUserInfo();
@@ -77,7 +60,7 @@ public class AdminController {
 //    @RequestMapping(value = "/menuList",method = RequestMethod.GET)
 //    public Map<String,Object> menuList(){
 //        Map<String,Object> result = new HashMap<>();
-//        List<MenuEntity> MenuEntityList = .list();
+//        List<>  = .list();
 //        result.put("title","拥有用户和管理员角色都可以查看");
 //        result.put("data",MenuEntityList);
 //        return ResultUtil.resultSuccess(result);
@@ -108,7 +91,7 @@ public class AdminController {
 //    @RequestMapping(value = "/adminRoleList",method = RequestMethod.GET)
 //    public Map<String,Object> adminRoleList(){
 //        Map<String,Object> result = new HashMap<>();
-//        List<RoleEntity> RoleEntityList = RoleService.list();
+//
 //        result.put("title","拥有ADMIN角色和sys:role:info权限可以访问");
 //        result.put("data",RoleEntityList);
 //        return ResultUtil.resultSuccess(result);

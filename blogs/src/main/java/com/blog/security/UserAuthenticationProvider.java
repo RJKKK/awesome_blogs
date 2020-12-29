@@ -1,7 +1,5 @@
 package com.blog.security;
 
-import com.blog.security.core.entity.RoleEntity;
-import com.blog.security.core.entity.UserEntity;
 import com.blog.security.entity.SelfUserEntity;
 import com.blog.security.service.SelfUserDetailsService;
 import com.blog.security.core.service.UserService;
@@ -29,8 +27,6 @@ import java.util.Set;
 public class UserAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private SelfUserDetailsService selfUserDetailsService;
-    @Autowired
-    private UserService UserService;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取表单输入中返回的用户名
@@ -52,11 +48,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         }
         // 角色集合
         Set<GrantedAuthority> authorities = new HashSet<>();
-//        // 查询用户角色
-//        List<RoleEntity> RoleEntityList = UserService.selectRoleByUserId(userInfo.getUserId());
-//        for (RoleEntity RoleEntity: RoleEntityList){
-//            authorities.add(new SimpleGrantedAuthority("ROLE_" + RoleEntity.getRoleName()));
-//        }
+
         //根据type确定用户权限
         if (userInfo.getType() == true){
             authorities.add(new SimpleGrantedAuthority("ROLE_" + "ADMIN"));

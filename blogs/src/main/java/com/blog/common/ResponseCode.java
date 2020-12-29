@@ -6,7 +6,7 @@ public enum ResponseCode {
     ERROR(1,"ERROR"),
     UNAUTHORIZATION(401,"未授权"),
     //登录模块 5002XX
-    NEED_LOGIN(500201,"未登录，需要登录"),
+    NEED_LOGIN(401,"未登录，需要登录"),
     USER_EMPTY(500202,"用户名不存在"),
     USER_FORZEN(500203,"用户被冻结"),
     USER_PASSWORD_ERROR(500204,"用户名或者密码错误"),
