@@ -8,12 +8,11 @@ import com.blog.vo.UserVo;
 
 public interface IUserService extends IService<User> {
 
-//    List<User> getUserList();
-
     User getUserById(int id);
 
     ServerResponse<String> register(UserVo userVo);
 
-    ServerResponse<Menu> getAuthorization(int Id);
+    ServerResponse<User> getUserInfo();
 
+    ServerResponse<String> updateUserInfo(UserVo userVo);
 }

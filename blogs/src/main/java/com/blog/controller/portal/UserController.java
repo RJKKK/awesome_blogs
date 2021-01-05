@@ -1,7 +1,6 @@
 package com.blog.controller.portal;
 
 import com.blog.common.ServerResponse;
-import com.blog.pojo.Menu;
 import com.blog.pojo.User;
 import com.blog.service.IUserService;
 import com.blog.vo.UserVo;
@@ -26,5 +25,28 @@ public class UserController {
         return iUserService.register(userVo);
     }
 
+    @ApiOperation("用户登录（框架已经设置为/login）,参数不变，方式更改为POST")
+    @RequestMapping(value = "/falseLogin",method = RequestMethod.GET)
+    public ServerResponse<String> login(String username,String password){
+        return ServerResponse.createBySuccess("登录");
+    }
+
+    @ApiOperation("用户注销（框架已经设置为/logout），方式更改为POST")
+    @RequestMapping(value = "/falseLogout",method = RequestMethod.GET)
+    public ServerResponse<String> logout(){
+        return ServerResponse.createBySuccess("注销");
+    }
+
+    @ApiOperation("获取用户信息")
+    @RequestMapping(value = "/getUserInfo",method = RequestMethod.GET)
+    public ServerResponse<User> getUserInfo(){
+        return iUserService.getUserInfo();
+    }
+
+    @ApiOperation("更新用户信息")
+    @RequestMapping(value = "/updateUserInfo",method = RequestMethod.POST)
+    public ServerResponse<String> updateUserInfo(UserVo userVo){
+        return iUserService.updateUserInfo(userVo);
+    }
 
 }

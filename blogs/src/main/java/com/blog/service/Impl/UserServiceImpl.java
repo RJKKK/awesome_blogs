@@ -2,11 +2,14 @@ package com.blog.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.blog.common.Const;
+import com.blog.common.ResponseCode;
 import com.blog.common.ServerResponse;
 import com.blog.mapper.UserMapper;
 import com.blog.pojo.Menu;
 import com.blog.pojo.User;
+import com.blog.security.entity.SelfUserEntity;
 import com.blog.service.IUserService;
+import com.blog.utils.SecurityUtil;
 import com.blog.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -56,6 +59,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
+    @Override
+    public ServerResponse<User> getUserInfo() {
+        User user = this.getUserById(SecurityUtil.getUserId());
+        if (user != null){
+            return ServerResponse.createBySuccess(user);
+        }
+        return  ServerResponse.createByErrorWithoutMessage(ResponseCode.NEED_LOGIN);
+    }
+
+    @Override
+    public ServerResponse<String> updateUserInfo(UserVo userVo) {
+        User user = this.getUserById(SecurityUtil.getUserId());
+        user.setUsername(userVo.getUsername());
+
+        return ServerResponse.createByErrorWithoutMessage(ResponseCode.NEED_LOGIN);
+    }
+
 
     public ServerResponse<String> checkValid(String str,String type){
         if(StringUtils.isNotBlank(type)){
@@ -78,8 +98,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return ServerResponse.createBySuccessMessage("校验成功");
     }
 
-    @Override
-    public ServerResponse<Menu> getAuthorization(int Id) {
-        return null;
-    }
+
 }
