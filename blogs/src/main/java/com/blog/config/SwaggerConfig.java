@@ -35,7 +35,7 @@ public class SwaggerConfig {
         Profiles profiles = Profiles.of("dev","test");
 //        //通过environment.acceptsProfiles()判断是否处于需要开启Swagger的环境
         boolean flag = environment.acceptsProfiles(profiles);
-        System.out.println(flag);
+//        System.out.println(flag);
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .groupName("芈")//配置API文档分组

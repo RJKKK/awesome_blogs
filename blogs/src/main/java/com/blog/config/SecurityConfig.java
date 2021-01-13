@@ -87,7 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // 不进行权限验证的请求或资源(从配置文件中读取)
-//                .antMatchers("/swagger-ui.html").permitAll()
                .antMatchers(JWTConfig.antMatchers.split(",")).permitAll()
                 // 其他的需要登陆后才能访问
                 .anyRequest().authenticated()
@@ -97,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登录地址
                 .formLogin()
-                .loginProcessingUrl("/login/userLogin")
+                .loginProcessingUrl("/login")
                 // 配置登录成功自定义处理类
                 .successHandler(userLoginSuccessHandler)
                 // 配置登录失败自定义处理类
@@ -105,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登出地址
                 .logout()
-                .logoutUrl("/login/userLogout")
+                .logoutUrl("/logout")
                 // 配置用户登出自定义处理类
                 .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()

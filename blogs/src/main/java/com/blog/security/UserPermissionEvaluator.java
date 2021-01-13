@@ -1,8 +1,6 @@
 package com.blog.security;
 
 
-import com.blog.security.core.entity.MenuEntity;
-import com.blog.security.entity.SelfUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -33,19 +31,20 @@ public class UserPermissionEvaluator implements PermissionEvaluator {
      */
     @Override
     public boolean hasPermission(Authentication authentication, Object targetUrl, Object permission) {
-        // 获取用户信息
-        SelfUserEntity selfUserEntity =(SelfUserEntity) authentication.getPrincipal();
-        // 查询用户权限(这里可以将权限放入缓存中提升效率)
-        Set<String> permissions = new HashSet<>();
-        List<MenuEntity> MenuEntityList = UserService.selectMenuByUserId(selfUserEntity.getUserId());
-        for (MenuEntity MenuEntity:MenuEntityList) {
-            permissions.add(MenuEntity.getPermission());
-        }
-        // 权限对比
-        if (permissions.contains(permission.toString())){
-            return true;
-        }
-        return false;
+//        // 获取用户信息
+//        SelfUserEntity selfUserEntity =(SelfUserEntity) authentication.getPrincipal();
+//        // 查询用户权限(这里可以将权限放入缓存中提升效率)
+//        Set<String> permissions = new HashSet<>();
+//        List<> MenuEntityList = UserService.selectMenuByUserId(selfUserEntity.getUserId());
+//        for ( :) {
+//            permissions.add(.getPermission());
+//        }
+//        // 权限对比
+//        if (permissions.contains(permission.toString())){
+//            return true;
+//        }
+//        return false;
+        return true;
     }
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {

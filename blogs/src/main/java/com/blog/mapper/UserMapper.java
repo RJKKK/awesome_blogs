@@ -17,4 +17,6 @@ public interface UserMapper extends BaseMapper<User> {
 //    User getUserByAccount(String account);
 
     int checkUsername(String username);
+
+    int checkEmail(String email);
 }

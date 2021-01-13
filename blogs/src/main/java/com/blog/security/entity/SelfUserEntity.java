@@ -39,6 +39,12 @@ public class SelfUserEntity implements Serializable, UserDetails {
 
     private Boolean type;
 
+    /**
+     * 路由路径
+     */
+
+    private String auth;
+
 
 	/**
 	 * 用户角色

@@ -49,6 +49,8 @@ public class JWTAuthenticationTokenFilter extends BasicAuthenticationFilter {
                 // 获取用户名
                 String username = claims.getSubject();
                 String userId=claims.getId();
+                //获取路由路径
+                String auth = claims.get("auth").toString();
                 if(!StringUtils.isEmpty(username)&&!StringUtils.isEmpty(userId)) {
                     // 获取角色
                     List<GrantedAuthority> authorities = new ArrayList<>();
@@ -66,6 +68,7 @@ public class JWTAuthenticationTokenFilter extends BasicAuthenticationFilter {
                     selfUserEntity.setUsername(claims.getSubject());
                     selfUserEntity.setUserId(Integer.parseInt(claims.getId()));
                     selfUserEntity.setAuthorities(authorities);
+                    selfUserEntity.setAuth(auth);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(selfUserEntity, userId, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
