@@ -2,6 +2,8 @@ import React from 'react';
 import {lazy} from 'react-router-guard'
 import {RouteConfig} from '../untils/interfaces'
 import {checkLogin} from "../untils/routerGuard";
+import CombineTable from "../components/CombineTable";
+const TableHoc = CombineTable<{naas:string}>()
 export const router: RouteConfig[] = [
     {
         path:'/',
@@ -36,7 +38,9 @@ export const router: RouteConfig[] = [
     },
     {
         path: '/test',
-        component: lazy(() => import('../components/CombineTable')),
+        component:  <>
+            <TableHoc></TableHoc>
+        </>,
         exact: true,
         canActivate: []
     }

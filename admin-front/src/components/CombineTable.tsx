@@ -6,6 +6,7 @@ import {TableProps as RcTableProps} from "rc-table/lib/Table";
 import {ColumnsType} from "antd/lib/table/interface";
 import {useLifecycles, useList, useSetState} from 'react-use'
 import {account} from "../untils/FormValidation";
+import {loginApi} from "../api";
 import {useApi} from "../hook/useApi";
 
 const Style = styled('div')`
@@ -45,44 +46,44 @@ const Style = styled('div')`
 }
   }
 `
-export default function <T extends object>(props: {
-    columns: ColumnsType<T>;
-    Api: Promise<Function>; }) {
-    const [params,setParams] = useSetState({
-        keywords:'',
-        pageSize:10,
-        pageNumber:1
-    });
-    const {state,fetch} = useApi<T>(async function()  {
-      const res = (await props.Api)(params)
-        return {...res,list:res.list.map((val: T, index: number)=>{
-            return{...val,key:index as number}
-            })}
-    })
-    useLifecycles(async ()=>{
-       await fetch()
-    })
-    const editor = <>
-        <a href="javascript:;">编辑</a>
-        <a href='javascript:;'>查看</a>
-        <a href="javascript:;">删除</a>
-    </>
 
-
-
-    return (
-        <Style>
-            <div className="middle">
-                <div className="left">
-                    <Button>删除用户</Button>
+ export default function EnhanceTable<T extends object>(){
+    return (props: {
+        columns: ColumnsType<T>;
+        Api: Promise<Function>; }) => {
+        const [params,setParams] = useSetState({
+            keywords:'',
+            pageSize:10,
+            pageNumber:1
+        });
+        const {state,fetch} = useApi<T>(async function()  {
+            const res = (await props.Api)(params)
+            return {...res,list:res.list.map((val: T, index: number)=>{
+                    return{...val,key:index as number}
+                })}
+        })
+        useLifecycles(async ()=>{
+            await fetch()
+        })
+        const editor = <>
+            <a href="javascript:;">编辑</a>
+            <a href='javascript:;'>查看</a>
+            <a href="javascript:;">删除</a>
+        </>
+        return (
+            <Style>
+                <div className="middle">
+                    <div className="left">
+                        <Button>删除用户</Button>
+                    </div>
+                    <div className="right">
+                        <SearchOutlined onClick={fetch} /><Input/>
+                    </div>
                 </div>
-                <div className="right">
-                    <SearchOutlined onClick={fetch} /><Input/>
-                </div>
-            </div>
-            <Table dataSource={state.value?state.value.list:[]} columns={props.columns}/>
+                <Table dataSource={state.value?state.value.list:[]} columns={props.columns}/>
 
-        </Style>
-    );
+            </Style>
+        )
+    }
 
-}
+ }
