@@ -1,10 +1,10 @@
-import React from "react";
-import {Button, Table, Input} from 'antd'
+import React, {ReactComponentElement} from "react";
+import {Button, Table, Input, Pagination} from 'antd'
 import {SearchOutlined} from '@ant-design/icons'
 import styled from "styled-components";
 import {TableProps as RcTableProps} from "rc-table/lib/Table";
 import {ColumnsType} from "antd/lib/table/interface";
-import {useLifecycles, useList, useSetState} from 'react-use'
+import {useLifecycles, useList, useSetState, useStateList} from 'react-use'
 import {account} from "../untils/FormValidation";
 import {loginApi} from "../api";
 import {useApi} from "../hook/useApi";
@@ -46,24 +46,26 @@ const Style = styled('div')`
 }
   }
 `
-
- export default function EnhanceTable<T extends object>(){
+const TableHoc = EnhanceTable<{naas:string}>()
+ export  function EnhanceTable<T extends object>(){
     return (props: {
         columns: ColumnsType<T>;
-        Api: Promise<Function>; }) => {
+        Api: Function; }) => {
         const [params,setParams] = useSetState({
             keywords:'',
             pageSize:10,
             pageNumber:1
         });
-        const {state,fetch} = useApi<T>(async function()  {
-            const res = (await props.Api)(params)
-            return {...res,list:res.list.map((val: T, index: number)=>{
-                    return{...val,key:index as number}
-                })}
-        })
-        useLifecycles(async ()=>{
-            await fetch()
+        const [list, { set, clear, reset }] = useList<T>([]);
+        const fetch = async ()=>{
+            const res = (await props.Api(params))
+            set(res);
+        }
+        const changeKeywords = (e:React.ChangeEvent<HTMLInputElement>)=>{
+            setParams({keywords: e.target.value})
+        }
+        useLifecycles( ()=>{
+             fetch()
         })
         const editor = <>
             <a href="javascript:;">编辑</a>
@@ -77,13 +79,38 @@ const Style = styled('div')`
                         <Button>删除用户</Button>
                     </div>
                     <div className="right">
-                        <SearchOutlined onClick={fetch} /><Input/>
+                        <SearchOutlined onClick={fetch} /><Input value={params.keywords} onChange={changeKeywords}/>
                     </div>
                 </div>
-                <Table dataSource={state.value?state.value.list:[]} columns={props.columns}/>
-
+                <Table dataSource={list?list:[]} columns={props.columns}/>
+                <br/>
+                <Pagination onChange={fetch} total={50} />
             </Style>
         )
     }
 
+ }
+
+ export default function MyTable (){
+    return(
+        <>
+            <TableHoc columns={[
+                {
+                    title: '姓名',
+                    dataIndex: 'name',
+                    key: 'name',
+                },
+                {
+                    title: '年龄',
+                    dataIndex: 'age',
+                    key: 'age',
+                },
+                {
+                    title: '住址',
+                    dataIndex: 'address',
+                    key: 'address',
+                },
+            ]} Api={loginApi}></TableHoc>
+        </>
+    )
  }
