@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { AccountsService } from '../accounts/accounts.service';
+import { AdminsService } from '../admins/admins.service';
 import { JwtService } from '@nestjs/jwt';
-import { statusCode } from '../types/dictionary';
+import { errorCode } from '../types/dictionary';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly accountsService:AccountsService,
+    private readonly accountsService:AdminsService,
     private jwtService: JwtService){}
 
-  async validateUser(account,pass):Promise<statusCode|any>{
+  async validateUser(account,pass):Promise<errorCode|any>{
     const user:any = await this.accountsService.findOneForLogin(account);
     if(!user){
-      return statusCode.NOT_ACCOUNT
+      return errorCode.NOT_ACCOUNT
     }
     if(user.password===pass){
       return {account:user.account,password:pass}
   }
-    else return statusCode.PASSWORD_ERROR
+    else return errorCode.PASSWORD_ERROR
 }
   async login(account: string) {
     const payload = { account };

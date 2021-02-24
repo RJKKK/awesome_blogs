@@ -1,4 +1,5 @@
-import { Account } from '../types';
+import {Admins} from '../admins.interface';
+
 export class DefaultRes<T>{
   err: number
   data?: T | null
@@ -11,7 +12,7 @@ export class DefaultRes<T>{
 }
 
 
-export class SetLoginToken implements Account {
+export class SetLoginToken implements Admins {
   account: string | null
   password: string | null
 }
