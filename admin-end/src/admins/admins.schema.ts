@@ -6,7 +6,7 @@ import { Document } from "mongoose";
 
 export type AdminsDocument = AdminsInterface & Document
 
-@Schema({})
+@Schema({timestamps:{createdAt:'created',updatedAt:'updated'}})
 export class Admins{
   @Prop()
   username:string
@@ -29,11 +29,6 @@ export class Admins{
   @Prop()
   auths:number[]
 
-  @Prop()
-  createTime?:number
-
-  @Prop()
-  updateTime?:number
 
   @Prop()
   role: Role;

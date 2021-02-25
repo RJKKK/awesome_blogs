@@ -11,6 +11,4 @@ export interface Admins {
   // avatar?:string
   // role?:Role,
   // auths?:number[],
-  // createTime?:number,
-  // updateTime?:number
 }
