@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 // import { AuthModule } from './auth/auth.module';
+import { RouteModule } from './route/route.module';
 
 
 @Module({
@@ -14,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
       {useCreateIndex:true,useFindAndModify:false}
     ),
     AuthModule,
+    RouteModule,
     // FilesModule,
   ],
   controllers: [AppController],
