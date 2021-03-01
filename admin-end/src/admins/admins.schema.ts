@@ -6,7 +6,8 @@ import { Document } from "mongoose";
 
 export type AdminsDocument = AdminsInterface & Document
 
-@Schema({timestamps:{createdAt:'created',updatedAt:'updated'}})
+
+@Schema({timestamps:{createdAt:'created',updatedAt:'updated',currentTime:()=>(Date.now()/1000+8*60*60)*1000}})
 export class Admins{
   @Prop()
   username:string
@@ -20,17 +21,17 @@ export class Admins{
   @Prop()
   tel?:number;
 
-  @Prop({required:true})
+  @Prop({required:true},)
   password:string;
 
   @Prop()
   avatar:string;
 
-  @Prop()
+  @Prop({default:[2,3,4]})
   auths:number[]
 
 
-  @Prop()
+  @Prop({default:0})
   role: Role;
 }
 export const AdminsSchema = SchemaFactory.createForClass(Admins)

@@ -9,15 +9,23 @@ import { Body, Controller, Get, Post, UseGuards,Request } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { AdminLogin } from '../dtos/adminLogin';
 import {errorCode} from '../types/dictionary';
+import { EditAdmin } from '../dtos/editAdmin';
 
 @Controller()
 export class AdminsController {
   constructor(private readonly adminsService:AdminsService,private authService: AuthService){}
-  @Post('/createAccount')
+  @Post('/createAdmin')
   @ApiOperation({description:'新建账号接口'})
-  async register(@Body() createAdminDto:CreateAdminDto){
-    const res = await this.adminsService.createAdmin(createAdminDto)
-    return (!res)? new DefaultRes(res):new DefaultRes(null,errorCode.ADMIN_EXIST,'账号或邮箱已经被注册！')
+  async register(@Body() dto:CreateAdminDto){
+    const res = await this.adminsService.createAdmin(dto)
+    return res
+  }
+
+  @Post('/editAdmin')
+  @ApiOperation({description:'修改管理员信息接口'})
+  async edit(@Body() dto:EditAdmin){
+    const res = await this.adminsService.editAdmin(dto)
+    return res
   }
 
 
@@ -25,7 +33,8 @@ export class AdminsController {
   @Post('/auth/login')
   @ApiOperation({description:'登录接口'})
   async login(@Body() body:AdminLogin) {
-    const token =  await this.authService.login(body.account);
+    const user = await this.adminsService.findOneForLogin(body.account)
+    const token =  await this.authService.login(user.account,user.auths,user.role);
     return new DefaultRes(token,0,'登录成功！')
 
   }
@@ -36,4 +45,7 @@ export class AdminsController {
   getProfile(@Request() req) {
     return req.user;
   }
+
+
+
 }

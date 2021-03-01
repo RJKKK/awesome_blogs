@@ -1,4 +1,4 @@
-import { Admins } from '../admins.interface';
+import { Admins, Role } from '../admins.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
@@ -15,6 +15,4 @@ export class CreateAdminDto implements Admins{
   @ApiProperty({description:'密码',name:'password'})
   @IsNotEmpty({message:'用户密码不能为空'})
   password:string
-
-
 }

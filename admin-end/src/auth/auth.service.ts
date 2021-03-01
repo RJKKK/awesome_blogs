@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { AdminsService } from '../admins/admins.service';
 import { JwtService } from '@nestjs/jwt';
 import { errorCode } from '../types/dictionary';
+import { Role } from '../admins.interface';
+import { processStatusCode } from '../helpers';
 
 @Injectable()
 export class AuthService {
@@ -12,15 +14,15 @@ export class AuthService {
   async validateUser(account,pass):Promise<errorCode|any>{
     const user:any = await this.accountsService.findOneForLogin(account);
     if(!user){
-      return errorCode.NOT_ACCOUNT
+      processStatusCode(errorCode.NOT_ACCOUNT)
     }
     if(user.password===pass){
-      return {account:user.account,password:pass}
+      return {account:user.account,password:pass,auths:user.auths}
   }
-    else return errorCode.PASSWORD_ERROR
+    else processStatusCode(errorCode.PASSWORD_ERROR)
 }
-  async login(account: string) {
-    const payload = { account };
+  async login(account: string,auths:number[],role:Role) {
+    const payload = { account,auths,role};
     return {
       token: this.jwtService.sign(payload),
     };

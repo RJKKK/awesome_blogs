@@ -3,12 +3,12 @@ export enum Role {
   isSuper
 }
 export interface Admins {
-  username?:string
+  name?:string
   account:string
   password?:string
   email?:string
   tel?:number
-  // avatar?:string
-  // role?:Role,
-  // auths?:number[],
+  avatar?:string
+  role?:Role,
+  auths?:number[],
 }
