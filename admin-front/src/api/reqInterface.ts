@@ -3,8 +3,8 @@ export interface loginForm extends Object{
     password: string
 }
 export interface registerForm extends Object{
-    account:string
     password:string
+    account:string
     email:string
     name?:string
 }

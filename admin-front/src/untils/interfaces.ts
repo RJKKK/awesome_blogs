@@ -14,7 +14,7 @@ export interface RouteConfig extends IConfig{
     component?: () => void;
     redirect?: string;
     exact?: boolean;
-    canActivate?: Array<Promise<Function>>
+    canActivate?: Array<Function>
     routes?:RouteConfig[]
 }
 export interface XMLdata<T=null> {

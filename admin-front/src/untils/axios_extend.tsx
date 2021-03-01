@@ -5,7 +5,7 @@ import React, { useEffect, useState} from "react";
 import {XMLdata} from "./interfaces";
 
 const normalReq = Axios.create({
-    baseURL: '/api',
+    baseURL: 'http://localhost:3001',
     timeout: 3000,
 })
 
@@ -21,7 +21,7 @@ export function post<T>(url: string, data: any) {
 
 normalReq.interceptors.request.use(config => {
     spinSwitch.loading = true
-    config.headers = { ...config.headers, Authorization: getCookies('token') }
+    config.headers = { ...config.headers, Authorization: `Bearer ${getCookies('token')}` }
     return config
 })
 normalReq.interceptors.response.use(res => {
@@ -34,12 +34,13 @@ normalReq.interceptors.response.use(res => {
 }, err => {
     // loadingPublisher.sub();
     spinSwitch.loading = false
+    console.log(err.response)
     if (err.response.status === 401) {
-        message.error(err.response.data.msg, 1)
+        message.error(err.response.message, 1)
     }
     if (err.response.status === 404) {
         message.error('未知接口或接口地址错误', 1)
-    } else message.error(err.response.data.msg || err.response.data, 1)
+    } else message.error(err.response.message || err.response.data, 1)
 })
 
 

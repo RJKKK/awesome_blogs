@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
 import styled from "styled-components";
-import {Form, Input, Button} from 'antd'
+import {Form, Input, Button,Modal} from 'antd'
 import {useMyForm} from "../hook/useMyForm";
 import {loginForm} from "../api/reqInterface";
 import {account as rAccount, password as rPassword} from "../untils/FormValidation";
 import {LoginRes} from "../api/resInterface";
 import {loginApi} from "../api";
+import {set,get} from 'js-cookie'
 
 export const Style = styled('div')`
 
@@ -80,12 +81,21 @@ export const Style = styled('div')`
       }
     }
 `
-export default function Login(props: { history: { replace: (arg0: string) => void; }; }) {
+export default function Login(props: React.PropsWithRef<any>) {
     const {form, state, setState, handleSubmit} = useMyForm<loginForm, LoginRes>({
         account: '',
         password: ''
     }, loginApi, (res) => {
-        console.log(res)
+        set('token',res.token)
+        Modal.success({
+            title:'恭喜你！',
+            content:'登录成功！',
+            okText:'确认',
+            cancelButtonProps:{disabled:true},
+            onOk:()=>{
+                props.history.push('/index')
+            }
+        })
     })
     return (
         <Style>

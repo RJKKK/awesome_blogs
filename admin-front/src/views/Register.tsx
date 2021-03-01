@@ -1,17 +1,28 @@
 import React from "react";
 import {useMyForm} from "../hook/useMyForm";
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input,Modal} from "antd";
 import {account as rAccount, password as rPassword,name as rName,email as rEmail} from "../untils/FormValidation";
 import {registerForm} from "../api/reqInterface";
 import {registerApi} from '../api'
 import {Style} from './Login'
-export default (props: { history: { replace: (arg0: string) => void; }; })=> {
+export default (props:React.PropsWithRef<any>)=> {
     const {setState,state,handleSubmit,form} = useMyForm<registerForm,registerForm>({
         name:'',
         password:'',
         account:'',
         email:''
-    },registerApi,()=>{console.log('提交了')})
+    },registerApi,()=>{
+        Modal.success({
+            title:'恭喜你！',
+            content:'注册成功！',
+            okText:'去登录',
+            okCancel:true,
+            onOk:()=>{
+                props.history.push('/login')
+            }
+        })
+
+    })
     return (
         <Style>
             <div className={'login-form-container'} style={{height:"580px",transform: "translateY(-14%)"}}>
@@ -48,7 +59,7 @@ export default (props: { history: { replace: (arg0: string) => void; }; })=> {
                     </Form.Item>
                     <Button className={'login-button'}
                             onClick={handleSubmit} size={'large'}
-                            style={{width: "100%"}} type={'primary'}>登录</Button>
+                            style={{width: "100%"}} type={'primary'}>注册</Button>
                     <div className={"login-form-bottom"} onClick={()=>{props.history.replace('/login')}}>
                         已有账号？前往登录
                     </div>

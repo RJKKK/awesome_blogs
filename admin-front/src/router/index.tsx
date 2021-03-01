@@ -2,16 +2,19 @@ import React from 'react';
 import {lazy} from 'react-router-guard'
 import {RouteConfig} from '../untils/interfaces'
 import {checkLogin} from "../untils/routerGuard";
+import CombineTable from "../components/CombineTable";
+
 export const router: RouteConfig[] = [
     {
         path:'/',
         redirect:'/index',
-        exact:true
+        exact:true,
+
     },
     {
         path: '/index',
         component: lazy(() => import('../views/MainContent')),
-        canActivate: [],
+        canActivate: [checkLogin],
         routes: [{
             path:'/index',
             redirect:'/index/main'
@@ -36,7 +39,9 @@ export const router: RouteConfig[] = [
     },
     {
         path: '/test',
-        component: lazy(() => import('../components/CombineTable')),
+        component:  <>
+
+        </>,
         exact: true,
         canActivate: []
     }
