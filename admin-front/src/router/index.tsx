@@ -8,12 +8,13 @@ export const router: RouteConfig[] = [
     {
         path:'/',
         redirect:'/index',
-        exact:true
+        exact:true,
+
     },
     {
         path: '/index',
         component: lazy(() => import('../views/MainContent')),
-        canActivate: [],
+        canActivate: [checkLogin],
         routes: [{
             path:'/index',
             redirect:'/index/main'

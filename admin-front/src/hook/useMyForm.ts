@@ -11,6 +11,7 @@ export function useMyForm<T extends Object, S extends Object | null>
         form.validateFields().then( async () => {
             if (apiFunction) {
                 const res = await apiFunction(state)
+                console.log(res)
                 if (res) {
                     getData && getData(res)
                 }

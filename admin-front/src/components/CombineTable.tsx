@@ -79,7 +79,8 @@ const TableHoc = EnhanceTable<{naas:string}>()
                         <Button>删除用户</Button>
                     </div>
                     <div className="right">
-                        <SearchOutlined onClick={fetch} /><Input value={params.keywords} onChange={changeKeywords}/>
+                        <SearchOutlined onClick={fetch} />
+                        <Input value={params.keywords} onChange={changeKeywords}/>
                     </div>
                 </div>
                 <Table dataSource={list?list:[]} columns={props.columns}/>
